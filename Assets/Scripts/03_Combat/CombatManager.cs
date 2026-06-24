@@ -43,8 +43,7 @@ public class CombatManager : MonoSingleton<CombatManager>
         return true;
     }
 
-    public void To(CombatEntity sender, CombatEntity receiver, 
-        CombatEvent @event)
+    public void To(CombatEntity sender, CombatEntity receiver, CombatEvent @event)
     {
         if (sender == null || receiver == null)
         {
@@ -58,7 +57,7 @@ public class CombatManager : MonoSingleton<CombatManager>
         switch (@event.EventType)
         {
             case CombatEventType.Damage:
-                receiver.TakeDamage(@event.Amount);
+                ApplyDamage(sender, receiver, @event);
                 break;
             case CombatEventType.Heal:
                 receiver.TakeHeal(@event.Amount);
@@ -66,5 +65,15 @@ public class CombatManager : MonoSingleton<CombatManager>
             default:
                 throw new System.NotImplementedException();
         }
+    }
+
+    private void ApplyDamage(CombatEntity sender, CombatEntity receiver, CombatEvent @event)
+    {
+        if (receiver.CanTakeDamage(sender, @event) == false)
+        {
+            return;
+        }
+
+        receiver.TakeDamage(@event.Amount);
     }
 }

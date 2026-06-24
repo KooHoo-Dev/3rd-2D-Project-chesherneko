@@ -28,7 +28,7 @@ public class HitBox : MonoBehaviour
         checkList.Clear();
     }
 
-    protected virtual void OnTriggerEnter2D(Collider2D collision)
+    protected virtual void TryHit(Collider2D collision)
     {
         if (HitLayerMask.Contains(collision) == false) return;
         if (checkList.Contains(collision)) return;
@@ -50,4 +50,10 @@ public class HitBox : MonoBehaviour
 
         CombatManager.Instance.To(sender, receiver, @event);
     }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+        => TryHit(collision);
+
+    private void OnTriggerStay2D(Collider2D collision)
+        => TryHit(collision);
 }

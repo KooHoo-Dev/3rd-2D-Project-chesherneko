@@ -8,6 +8,7 @@ public class PlayerMove : MonoBehaviour
     [SerializeField] private Rigidbody2D body;
     [SerializeField] private new Collider2D collider;
     [SerializeField] private Afterimage afterImage;
+    [SerializeField] private PlayerCombat combat;
     #endregion
 
     #region SETTING FIELDS
@@ -512,6 +513,8 @@ public class PlayerMove : MonoBehaviour
         isDashing = true;
         isDashOnCooldown = true;
 
+        combat.OnDashStarted();
+
         if (IsGrounded) coyoteTime = float.PositiveInfinity;
 
         float dir = moveInput.x;
@@ -554,6 +557,7 @@ public class PlayerMove : MonoBehaviour
                 LastMoveDirection;
 
             afterImage.Stop();
+            combat.OnDashFinished();
         }
     }
     #endregion

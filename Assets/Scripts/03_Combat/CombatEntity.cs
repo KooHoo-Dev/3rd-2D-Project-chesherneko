@@ -12,6 +12,8 @@ public abstract class CombatEntity : MonoBehaviour
     }
 
     #region PUBLIC METHOD
+    public virtual bool CanTakeDamage(CombatEntity sender, CombatEvent @event) => true;
+
     public abstract void TakeDamage(int damage);
     public abstract void TakeHeal(int heal);
 
