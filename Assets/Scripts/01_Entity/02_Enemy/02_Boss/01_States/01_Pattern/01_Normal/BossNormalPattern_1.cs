@@ -4,25 +4,12 @@ using UnityEngine;
 
 public class BossNormalPattern_1 : BossPatternStateBase
 {
-    private WaitForSeconds waitForStartLag;
-    private WaitForSeconds waitForEndLag;
-
     [Title("Components")]
     [SerializeField] private Animator animator;
 
     [Title("Settings")]
     [SerializeField] private float followDuration = 2f;
     [SerializeField] private Vector3 followOffset;
-
-    [Space]
-    [SerializeField] private float startLag = 0.25f;
-    [SerializeField] private float endLag = 1.5f;
-
-    private void Awake()
-    {
-        waitForStartLag = new WaitForSeconds(startLag);
-        waitForEndLag = new WaitForSeconds(endLag);
-    }
 
     protected override void OnEnable()
     {

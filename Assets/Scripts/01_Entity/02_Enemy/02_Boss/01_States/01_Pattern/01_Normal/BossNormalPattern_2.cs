@@ -4,17 +4,10 @@ using UnityEngine;
 
 public class BossNormalPattern_2 : BossPatternStateBase
 {
-    private WaitForSeconds waitForStartLag;
-    private WaitForSeconds waitForEndLag;
-
     [Title("Settings")]
     [SerializeField] private int spawnCount = 10;
     [SerializeField] private float spawnRange = 25f;
     [SerializeField] private float spawnInterval = 1f;
-
-    [Space]
-    [SerializeField] private float startLag = 2f;
-    [SerializeField] private float endLag = 2f;
 
     [Title("References")]
     [SerializeField] private Animator prefab;
@@ -23,10 +16,9 @@ public class BossNormalPattern_2 : BossPatternStateBase
     [ShowInInspector, ReadOnly] private Animator[] attackObjects;
     [ShowInInspector, ReadOnly] private Vector2[] spawnPoints;
 
-    private void Awake()
+    protected override void Awake()
     {
-        waitForStartLag = new WaitForSeconds(startLag);
-        waitForEndLag = new WaitForSeconds(endLag);
+        base.Awake();
 
         InitAttackObjects();
         InitSpawnPoints();

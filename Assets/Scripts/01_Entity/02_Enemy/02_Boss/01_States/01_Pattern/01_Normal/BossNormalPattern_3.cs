@@ -4,21 +4,16 @@ using UnityEngine;
 
 public class BossNormalPattern_3 : BossPatternStateBase
 {
-    private WaitForSeconds waitForStartLag;
     private WaitForSeconds waitForActiveLag;
-    private WaitForSeconds waitForEndLag;
 
-    [Title("Settings")]
-    [SerializeField] private float startLag = 0.1f;
-    [SerializeField] private float activeLag = 0.2f;
-    [SerializeField] private float endLag = 2f;
+    [SerializeField, TitleGroup("Lag")] private float activeLag = 0.2f;
 
     [Title("Runtime States")]
     [ShowInInspector, ReadOnly] private GameObject[] sparks;
 
-    private void Awake()
+    protected override void Awake()
     {
-        InitYieldInstructions();
+        base.Awake();
         InitSparkObjects();
     }
 
@@ -32,12 +27,10 @@ public class BossNormalPattern_3 : BossPatternStateBase
 
     protected override void OnDisable() { }
 
-    [PropertySpace, Button(ButtonHeight = 40)]
-    private void InitYieldInstructions()
+    protected override void InitYieldInstructions()
     {
-        waitForStartLag = new WaitForSeconds(startLag);
+        base.InitYieldInstructions();
         waitForActiveLag = new WaitForSeconds(activeLag);
-        waitForEndLag = new WaitForSeconds(endLag);
     }
 
     private void InitSparkObjects()

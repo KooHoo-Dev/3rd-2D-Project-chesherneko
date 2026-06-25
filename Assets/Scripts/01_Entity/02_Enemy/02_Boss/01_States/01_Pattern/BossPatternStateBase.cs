@@ -1,7 +1,23 @@
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 public abstract class BossPatternStateBase : BossStateBase
 {
-    //기본적으로 모든 패턴은 이 클래스를 상속받음
-    //만약 공통된 패턴 특징(?)이 있다면 여기를 통해 작성
+    protected WaitForSeconds waitForStartLag;
+    protected WaitForSeconds waitForEndLag;
+
+    [SerializeField, TitleGroup("Lag")] protected float startLag;
+    [SerializeField, TitleGroup("Lag")] protected float endLag;
+
+    protected virtual void Awake()
+    {
+        InitYieldInstructions();
+    }
+
+    [PropertySpace, Button(ButtonHeight = 40)]
+    protected virtual void InitYieldInstructions()
+    {
+        waitForStartLag = new WaitForSeconds(startLag);
+        waitForEndLag = new WaitForSeconds(endLag);
+    }
 }
