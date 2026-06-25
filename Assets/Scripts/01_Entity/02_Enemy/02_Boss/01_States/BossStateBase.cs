@@ -2,7 +2,7 @@ using UnityEngine;
 
 public abstract class BossStateBase : MonoBehaviour
 {
-    private BossController owner;
+    protected BossController owner;
 
     public void Initialize(BossController owner)
         => this.owner = owner;

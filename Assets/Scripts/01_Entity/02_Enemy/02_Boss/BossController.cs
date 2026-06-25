@@ -25,7 +25,7 @@ public class BossController : MonoBehaviour
 
     private void Start()
     {
-        Type start = typeof(BossStateBase);
+        Type start = typeof(BossIdleState);
         ChangeState(start);
     }
 
@@ -34,7 +34,7 @@ public class BossController : MonoBehaviour
         if (stateMap.TryGetValue(stateType, 
             out BossStateBase nextState) == false)
         {
-            Debug.LogError($"'{stateType.Name}'은 등록되지 않은 상태입니다.");
+            Debug.LogError($"'{stateType.FullName}'은 등록되지 않은 상태입니다.");
             return;
         }
 

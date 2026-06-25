@@ -1,15 +1,21 @@
+using DG.Tweening;
 using Sirenix.OdinInspector;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class Projectile : MonoBehaviour
+public class Projectile : HitBox
 {
     [Title("Components")]
     [SerializeField] private Rigidbody2D body;
 
-    [Title("Settings")]
+    [Title("Projectile Settings")]
     [SerializeField] private float shootSpeed = 3f;
     [SerializeField] private float shootDuration = 2f;
+
+    [Space]
+    [SerializeField] private float checkRadius = 0.125f;
+    [SerializeField] private float checkDistance = 0.05f;
+    [SerializeField] private Vector3 checkOffset;
     [SerializeField] private LayerMask hitLayerMask;
 
     [Title("Runtime State")]
@@ -30,11 +36,22 @@ public class Projectile : MonoBehaviour
     private void FixedUpdate()
     {
         if (isShooted == false) return;
+
         UpdatePosition();
+
+        Vector2 origin = transform.position;
+        RaycastHit2D hit = Physics2D.CircleCast(origin, checkRadius, shootDirection, checkOffset.x, hitLayerMask);
+
+        if (hit.collider == null) return;
+
+        bool isHit = TryHit(hit.collider);
+        if (isHit) shooter.ReturnProjectile(this);
     }
 
-    private void OnDisable()
+    protected override void OnDisable()
     {
+        base.OnDisable();
+
         isShooted = false;
         shootTime = 0f;
     }
@@ -68,13 +85,5 @@ public class Projectile : MonoBehaviour
         Vector2 delta = dist * shootDirection;
 
         body.MovePosition(body.position + delta);
-    }
-    
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (hitLayerMask.Contains(collision) == false) 
-            return;
-
-        shooter.ReturnProjectile(this);
     }
 }

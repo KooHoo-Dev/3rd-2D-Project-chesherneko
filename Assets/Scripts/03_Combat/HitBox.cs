@@ -23,18 +23,18 @@ public class HitBox : MonoBehaviour
         }
     }
 
-    private void OnDisable()
+    protected virtual void OnDisable()
     {
         checkList.Clear();
     }
 
-    protected virtual void TryHit(Collider2D collision)
+    protected virtual bool TryHit(Collider2D collision)
     {
-        if (HitLayerMask.Contains(collision) == false) return;
-        if (checkList.Contains(collision)) return;
+        if (HitLayerMask.Contains(collision) == false) return false;
+        if (checkList.Contains(collision)) return false;
 
         if (CombatManager.Instance
-            .TryGetHurtBox(collision, out HurtBox hurtBox) == false) return;
+            .TryGetHurtBox(collision, out HurtBox hurtBox) == false) return false;
 
         checkList.Add(collision);
 
@@ -49,6 +49,8 @@ public class HitBox : MonoBehaviour
         @event.Position = Vector2.zero;
 
         CombatManager.Instance.To(sender, receiver, @event);
+
+        return true;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

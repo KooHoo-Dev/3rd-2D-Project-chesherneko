@@ -12,6 +12,11 @@ public class PlayerCombat : CombatEntity
     [ShowInInspector, ReadOnly] private bool isDashInvincible = false;
     [ShowInInspector, ReadOnly] private float dashTime = 0f;
 
+    private void OnEnable()
+    {
+        LocalPlayer = this;
+    }
+
     private void Update()
     {
         if (isDashInvincible == false) return;

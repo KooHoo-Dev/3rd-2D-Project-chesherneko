@@ -500,28 +500,6 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
-    - serializedVersion: 2
-      name: Effect 10_16
-      rect:
-        serializedVersion: 2
-        x: 512
-        y: 0
-        width: 32
-        height: 128
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: c1134bb767dbd7543985aea4a5857626
-      internalID: 1882112023
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
     outline: []
     customData: 
     physicsShape: []
@@ -546,7 +524,6 @@ TextureImporter:
       Effect 10_13: 668300256
       Effect 10_14: 1296257528
       Effect 10_15: 1369232305
-      Effect 10_16: 1882112023
       Effect 10_2: 6043004331322145816
       Effect 10_3: 5040087873951469230
       Effect 10_4: -3516981733186726990
