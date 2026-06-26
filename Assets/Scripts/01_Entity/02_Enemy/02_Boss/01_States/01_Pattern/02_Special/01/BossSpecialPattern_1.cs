@@ -16,10 +16,10 @@ public class BossSpecialPattern_1 : BossPatternStateBase
     [SerializeField] private float spawnInterval = 0.5f;
 
     [Title("References")]
-    [SerializeField] private BossLaser prefab;
+    [SerializeField] private BossEye prefab;
 
     [Title("Runtime States")]
-    [ShowInInspector, ReadOnly] private BossLaser[] lasers;
+    [ShowInInspector, ReadOnly] private BossEye[] eyes;
 
     protected override void Awake()
     {
@@ -45,38 +45,57 @@ public class BossSpecialPattern_1 : BossPatternStateBase
 
     private void InitLasers()
     {
-        lasers = new BossLaser[spawnCount];
+        eyes = new BossEye[spawnCount];
 
-        BossLaser[] preLoadeds = GetComponentsInChildren<BossLaser>(true);
+        BossEye[] preLoadeds = GetComponentsInChildren<BossEye>(true);
 
         for (int i = 0; i < preLoadeds.Length; i++)
-            lasers[i] = preLoadeds[i];
+            eyes[i] = preLoadeds[i];
 
         for (int i = preLoadeds.Length; i < spawnCount; i++)
         {
-            BossLaser laser = Instantiate(prefab, transform);
-            lasers[i] = laser;
+            BossEye eye = Instantiate(prefab, transform);
+            eyes[i] = eye;
 
-            laser.gameObject.SetActive(false);
+            eye.gameObject.SetActive(false);
         }
     }
 
     private IEnumerator PatternCoroutine()
     {
+        //차례대로 눈을 하나씩 랜덤한 위치에 생성
         for (int i = 0; i < spawnCount; i++)
         {
-            BossLaser laser = lasers[i];
+            BossEye eye = eyes[i];
 
             float randX = Random.Range(minSpawnPoint.x, maxSpawnPoint.x);
             float randY = Random.Range(minSpawnPoint.y, maxSpawnPoint.y);
             Vector2 spawnPos = new(randX, randY);
 
-            Transform target = PlayerCombat.LocalPlayer.transform;
-
-            laser.Spawn(spawnPos);
-            laser.RequestFollowTarget(target);
+            eye.Spawn(spawnPos);
+            eye.ExecuteLogic();
 
             yield return new WaitForSeconds(spawnInterval);
         }
+
+        //모든 눈이 비활성화 상태일 때 까지 대기
+        while (true)
+        {
+            if (HasActiveEye() == false) break;
+            yield return null;
+        }
+
+        Debug.Log("패턴 종료!");
+    }
+
+    private bool HasActiveEye()
+    {
+        for (int i = 0; i < spawnCount; i++)
+        {
+            BossEye eye = eyes[i];
+            if (eye.isActiveAndEnabled) return true;
+        }
+
+        return false;
     }
 }
