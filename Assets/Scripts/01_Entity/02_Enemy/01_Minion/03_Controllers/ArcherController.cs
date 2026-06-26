@@ -6,6 +6,8 @@ public class ArcherController : EnemyController
     [SerializeField, TitleGroup("Components")] private ProjectileShooter normalShooter;
     [SerializeField, TitleGroup("Components")] private ProjectileShooter enhancedShooter;
 
+    public override MinionType Type => MinionType.Archer;
+
     private Vector2 targetPosition;
     private bool isReady = false;
 

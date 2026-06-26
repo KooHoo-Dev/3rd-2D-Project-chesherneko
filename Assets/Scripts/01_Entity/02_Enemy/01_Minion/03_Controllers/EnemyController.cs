@@ -29,6 +29,9 @@ public class EnemyController : AnimationStateController
     #endregion
 
     #region RUNTIME STATE FIELDS
+    [Title("Type")]
+    [ShowInInspector, ReadOnly] public virtual MinionType Type { get; private set; } = MinionType.Warrior;
+
     [Space]
     [ShowInInspector, ReadOnly, TitleGroup("Patrol")] private float patrolMinX;
     [ShowInInspector, ReadOnly, TitleGroup("Patrol")] private float patrolMaxX;
