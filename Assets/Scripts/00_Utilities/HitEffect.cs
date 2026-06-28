@@ -13,7 +13,7 @@ public class HitEffect : MonoBehaviour
     [SerializeField] private Animator animator;
 
     [Title("Settings")]
-    [SerializeField] private float flickInterval = 0.1f;
+    [SerializeField] private float flickInterval = 0.083f;
     [SerializeField] private int repeat = 2;
     [SerializeField] private bool hasHitStun = true;
 
@@ -22,7 +22,6 @@ public class HitEffect : MonoBehaviour
     private void Awake()
     {
         WAIT_FOR_SECONDS ??= new WaitForSeconds(flickInterval);
-
         propertyBlock = new();
     }
 

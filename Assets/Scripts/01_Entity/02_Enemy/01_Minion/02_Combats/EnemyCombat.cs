@@ -10,12 +10,10 @@ public enum HitReactionType
 
 public class EnemyCombat : CombatEntity
 {
-    [Title("Components")]
-    [SerializeField] private Animator animator;
-    [SerializeField] private HitEffect hitEffect;
+    [SerializeField, TitleGroup("Components")] private Animator animator;
+    [SerializeField, TitleGroup("Components")] private HitEffect hitEffect;
 
-    [Title("Settings")]
-    [SerializeField] private HitReactionType hitReactionType;
+    [SerializeField, TitleGroup("Settings")] private HitReactionType hitReactionType;
 
     public override void TakeDamage(int damage)
     {
@@ -23,7 +21,7 @@ public class EnemyCombat : CombatEntity
 
         if (isDead)
         {
-            animator.SetTrigger(AnimationParam.DEAD);
+            OnDead();
             return;
         }
 
@@ -47,5 +45,10 @@ public class EnemyCombat : CombatEntity
     public override void TakeHeal(int heal)
     {
         
+    }
+
+    protected virtual void OnDead()
+    {
+        animator.SetTrigger(AnimationParam.DEAD);
     }
 }

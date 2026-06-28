@@ -29,17 +29,15 @@ public class BossSpecialPattern_2 : BossPatternStateBase
 
     private IEnumerator PatternCoroutine()
     {
-        //BossMinionSpawner의 생성 시간까지 대기
-        //이후 로직은 BossMinionSpawner에서 처리
-        //PatternState는 종료 조건만 업데이트
-        yield return minionSpawner.SpawnCoroutine();
-        minionSpawner.Execute();
+        yield return minionSpawner.InitCoroutine();
 
-        //패턴 시간 업데이트
         float time = 0f;
+
         while (true)
         {
-            if (minionSpawner.RemainMinionCount == 0) break;
+            //가정 1. 정상적으로 패턴을 종료했다면
+            //가정 2. 제한 시간 내에 패턴을 끝내지 못 했다면
+            if (minionSpawner.gameObject.activeSelf == false) break;
             if (time > maxPatternTime) break;
 
             time += Time.deltaTime;
@@ -47,5 +45,6 @@ public class BossSpecialPattern_2 : BossPatternStateBase
         }
 
         Debug.Log("2번 특수 패턴 종료!");
+        yield return null;
     }
 }

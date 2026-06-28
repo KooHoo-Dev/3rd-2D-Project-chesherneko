@@ -30,9 +30,6 @@ public class EnemyController : AnimationStateController
     #endregion
 
     #region RUNTIME STATE FIELDS
-    [Title("Type")]
-    [ShowInInspector, ReadOnly] public virtual MinionType Type { get; private set; } = MinionType.Warrior;
-
     [Space]
     [ShowInInspector, ReadOnly, TitleGroup("Patrol")] private float patrolMinX;
     [ShowInInspector, ReadOnly, TitleGroup("Patrol")] private float patrolMaxX;
@@ -159,7 +156,7 @@ public class EnemyController : AnimationStateController
         float dir = Mathf.Sign(dirRaw);
 
         Vector3 scale = transform.localScale;
-        scale.x = dir;
+        scale.x = dir * Mathf.Abs(scale.x);
         transform.localScale = scale;
     }
 

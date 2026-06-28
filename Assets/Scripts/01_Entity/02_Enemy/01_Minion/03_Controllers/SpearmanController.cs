@@ -7,8 +7,6 @@ public class SpearmanController : EnemyController
     [ShowInInspector, ReadOnly, TitleGroup("Attack")] private bool isCharged = false;
     [ShowInInspector, ReadOnly, TitleGroup("Attack")] private int lastAttackID;
 
-    public override MinionType Type => MinionType.Spearman;
-
     protected override int Attack()
     {
         int id;

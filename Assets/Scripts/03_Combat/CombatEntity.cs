@@ -10,7 +10,7 @@ public abstract class CombatEntity : MonoBehaviour
     {
         Stat.ResetHP();
     }
-
+    
     #region PUBLIC METHOD
     public virtual bool CanTakeDamage(CombatEntity sender, CombatEvent @event) => true;
 

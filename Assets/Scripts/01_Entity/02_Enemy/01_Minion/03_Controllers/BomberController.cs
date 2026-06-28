@@ -13,8 +13,6 @@ public class BomberController : EnemyController
     [SerializeField] private float suicideHPRatioThreshold = 0.3f;
     [Space, ShowInInspector, ReadOnly] private bool isSuicide = false;
 
-    public override MinionType Type => MinionType.Bomber;
-
     protected override int Attack()
     {
         int id;
