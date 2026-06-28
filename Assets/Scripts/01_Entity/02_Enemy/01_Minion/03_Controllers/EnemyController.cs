@@ -25,6 +25,7 @@ public class EnemyController : AnimationStateController
     [SerializeField, TitleGroup("Attack")] private float attackRange = 3f;
     [SerializeField, Range(1, 9), TitleGroup("Attack")] private int enhancedAttackChance = 3;
 
+    [field: SerializeField, TitleGroup("Spawn")] public bool CanRespawn { get; private set; } = true;
     [field: SerializeField, TitleGroup("Spawn")] public float RespawnDelay { get; private set; } = 30f;
     #endregion
 
@@ -43,7 +44,8 @@ public class EnemyController : AnimationStateController
     [PropertySpace]
     [ShowInInspector, ReadOnly, TitleGroup("Attack")] public bool IsAttackRequested { get; set; } = false;
 
-    [Space]
+    [PropertySpace]
+    [ShowInInspector, ReadOnly, TitleGroup("Spawn")] public bool HasSpawnedOnce { get; private set; } = false;
     [ShowInInspector, ReadOnly, TitleGroup("Spawn")] private Vector2 respawnPoint;
     [ShowInInspector, ReadOnly, TitleGroup("Spawn")] private Vector3 respawnDirection;
     #endregion
@@ -92,7 +94,7 @@ public class EnemyController : AnimationStateController
 
     protected override void InitDefaultState()
     {
-        int key = Animator.StringToHash(AnimationTag.ANIM_TAG_IDLE);
+        int key = Animator.StringToHash(AnimationTag.ANIM_TAG_SPAWN);
         defaultState = stateMap[key];
     }
     #endregion
@@ -211,11 +213,29 @@ public class EnemyController : AnimationStateController
         Animator.ResetTrigger(AnimationParam.ATTACK_2);
     }
 
-    public void Respawn()
+    public void UpdateDeadState(float elapsedTime)
+    {
+        if (CanRespawn == false)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        if (elapsedTime > RespawnDelay)
+            Animator.SetTrigger(AnimationParam.SPAWN);
+    }
+
+    public void Spawn()
     {
         combat.ResetHP();
-        transform.position = respawnPoint;
-        transform.localScale = respawnDirection;
+
+        if (HasSpawnedOnce == false)
+            HasSpawnedOnce = true;
+        else
+        {
+            transform.position = respawnPoint;
+            transform.localScale = respawnDirection;
+        }
     }
     #endregion
 }

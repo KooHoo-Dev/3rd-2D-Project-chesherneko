@@ -6,6 +6,6 @@ public class EnemySpawnState : EnemyAnimationStateBase
 
     public override void OnEnter()
     {
-        Owner.Respawn();
+        Owner.Spawn();
     }
 }

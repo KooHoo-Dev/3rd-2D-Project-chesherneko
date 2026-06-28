@@ -19,9 +19,7 @@ public class EnemyDeadState : EnemyAnimationStateBase
         if (stateInfo.normalizedTime < 1f) return;
 
         respawnTime += Time.deltaTime;
-
-        if (respawnTime >= Owner.RespawnDelay)
-            Animator.SetTrigger(AnimationParam.SPAWN);
+        Owner.UpdateDeadState(respawnTime);
     }
 
     public override void OnExit()
