@@ -1,12 +1,17 @@
+using Sirenix.OdinInspector;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class BossController : MonoBehaviour
 {
-    private readonly Dictionary<Type, BossStateBase> stateMap = new();
+    [Title("Components")]
+    [field: SerializeField] public Animator Animator { get; private set; }
 
-    private BossStateBase currentState;
+    [Title("Runtime States")]
+    [ShowInInspector, ReadOnly] private BossStateBase currentState;
+
+    private readonly Dictionary<Type, BossStateBase> stateMap = new();
 
     private void Awake()
     {

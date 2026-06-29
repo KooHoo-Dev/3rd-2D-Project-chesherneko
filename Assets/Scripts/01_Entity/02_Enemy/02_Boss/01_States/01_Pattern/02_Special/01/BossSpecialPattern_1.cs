@@ -21,21 +21,12 @@ public class BossSpecialPattern_1 : BossPatternStateBase
     [Title("Runtime States")]
     [ShowInInspector, ReadOnly] private BossEye[] eyes;
 
+    protected override int PatternStartTrigger => Animator.StringToHash("SpecialAttack1");
+
     protected override void Awake()
     {
         base.Awake();
         InitLasers();
-    }
-
-    protected override void OnEnable()
-    {
-        StartCoroutine(PatternCoroutine());
-        //지정한 범위 내에서 일정 간격으로 랜덤한 위치에 '눈'을 소환
-        //눈은 계속해서 플레이어를 바라보다가 생성된지 일정 시간이 지났을 때
-        //바라보는 것을 멈추고 아주 약간의 시간이 지난 후 플레이어를 향해 빔을 발사
-        //빔은 약간의 시간이 지난 후 사라지며 빔이 사라지고 난 뒤 눈이 서서히 사라짐
-        //소환한 모든 '눈'이 빔을 쏘고 사라지고 나면 패턴 종료
-        //해당 빔으로 보스 몹의 구체를 타격 시, 대량의 피해 발생
     }
 
     protected override void OnDisable()
@@ -61,8 +52,10 @@ public class BossSpecialPattern_1 : BossPatternStateBase
         }
     }
 
-    private IEnumerator PatternCoroutine()
+    protected override IEnumerator PatternCoroutine()
     {
+        yield return base.PatternCoroutine();
+
         //차례대로 눈을 하나씩 랜덤한 위치에 생성
         for (int i = 0; i < spawnCount; i++)
         {

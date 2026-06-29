@@ -19,10 +19,8 @@ public class BossNormalPattern_3 : BossPatternStateBase
 
     protected override void OnEnable()
     {
-        owner.ChangeState(typeof(BossNormalPattern_3));
-
         sparks.Shuffle();
-        StartCoroutine(PatternCoroutine());
+        base.OnEnable();
     }
 
     protected override void OnDisable() { }
@@ -46,8 +44,10 @@ public class BossNormalPattern_3 : BossPatternStateBase
         }
     }
 
-    private IEnumerator PatternCoroutine()
+    protected override IEnumerator PatternCoroutine()
     {
+        yield return base.PatternCoroutine();
+
         for (int i = 0; i < sparks.Length; i++)
         {
             yield return waitForStartLag;

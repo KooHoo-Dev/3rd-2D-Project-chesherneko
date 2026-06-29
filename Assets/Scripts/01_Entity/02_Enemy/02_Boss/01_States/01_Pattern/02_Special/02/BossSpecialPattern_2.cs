@@ -17,18 +17,18 @@ public class BossSpecialPattern_2 : BossPatternStateBase
     [Title("Settings")]
     [SerializeField] private float maxPatternTime;
 
-    protected override void OnEnable()
-    {
-        StartCoroutine(PatternCoroutine());
-    }
+    protected override int PatternStartTrigger => Animator.StringToHash("SpecialAttack2");
+    private readonly int patternEndTrigger = Animator.StringToHash("SpecialAttack2_End");
 
     protected override void OnDisable()
     {
         
     }
 
-    private IEnumerator PatternCoroutine()
+    protected override IEnumerator PatternCoroutine()
     {
+        yield return base.PatternCoroutine();
+
         yield return minionSpawner.InitCoroutine();
 
         float time = 0f;

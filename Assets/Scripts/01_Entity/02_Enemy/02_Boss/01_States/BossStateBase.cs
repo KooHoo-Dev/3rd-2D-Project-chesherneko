@@ -4,6 +4,8 @@ public abstract class BossStateBase : MonoBehaviour
 {
     protected BossController owner;
 
+    protected Animator Animator => owner.Animator;
+
     public void Initialize(BossController owner)
         => this.owner = owner;
 

@@ -11,16 +11,17 @@ public class BossNormalPattern_1 : BossPatternStateBase
     [SerializeField] private float followDuration = 2f;
     [SerializeField] private Vector3 followOffset;
 
-    protected override void OnEnable()
+    protected override void OnDisable()
     {
-        owner.ChangeState(typeof(BossNormalPattern_1));
-        StartCoroutine(ExecuteCoroutine());
+        animator.gameObject.SetActive(false);
     }
 
-    protected override void OnDisable() { }
-
-    private IEnumerator ExecuteCoroutine()
+    protected override IEnumerator PatternCoroutine()
     {
+        yield return base.PatternCoroutine();
+
+        animator.gameObject.SetActive(true);
+
         float time = 0f;
         while (true)
         {

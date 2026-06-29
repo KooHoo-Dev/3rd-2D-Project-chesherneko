@@ -176,6 +176,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: NormalPattern_2_AttackObject (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 8696293891802782469, guid: cdeb3dc5902247340be49cd55f04a0be, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -780,7 +784,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &425383016
 Transform:
   m_ObjectHideFlags: 0
@@ -866,7 +870,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: -2
+  m_SortingOrder: -6
   m_MaskInteraction: 0
   m_Sprite: {fileID: -568845349524270402, guid: e83635d0ab093ed4686be8d0acf50d82, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -1052,6 +1056,10 @@ PrefabInstance:
     - target: {fileID: 8696293891802782469, guid: cdeb3dc5902247340be49cd55f04a0be, type: 3}
       propertyPath: m_Name
       value: NormalPattern_2_AttackObject (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8696293891802782469, guid: cdeb3dc5902247340be49cd55f04a0be, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2053,12 +2061,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1dd066db48a6da438b558e4cb9e8e77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BossNormalPattern_2
-  startLag: 2
+  startLag: 0.25
   endLag: 2
   spawnCount: 10
   spawnRange: 25
   spawnInterval: 1
   prefab: {fileID: 7201713278470914120, guid: cdeb3dc5902247340be49cd55f04a0be, type: 3}
+  patternDelay: 2
 --- !u!1 &1199095848
 GameObject:
   m_ObjectHideFlags: 0
@@ -2433,6 +2442,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: NormalPattern_2_AttackObject (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 8696293891802782469, guid: cdeb3dc5902247340be49cd55f04a0be, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2553,7 +2566,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3bdcb9f80c1957429eff69fc6f5ee8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BossNormalPattern_3
-  startLag: 0.2
+  startLag: 0
   endLag: 2
   activeLag: 0.4
 --- !u!1001 &1404957400
@@ -2747,7 +2760,7 @@ SpriteRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1468794076}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -2844,6 +2857,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36d4efe0882729f4db946d8f03c22232, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BossController
+  <Animator>k__BackingField: {fileID: 1468794079}
 --- !u!1 &1484081150
 GameObject:
   m_ObjectHideFlags: 0
@@ -3079,7 +3093,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be6c8561367c37e4696ebded48f23ccf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BossNormalPattern_1
-  startLag: 0.25
+  startLag: 0.5
   endLag: 2
   animator: {fileID: 1942444405}
   followDuration: 2
@@ -3133,11 +3147,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9fff30ed56d66c04ea01ea87d6cf335b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BossSpecialPattern_1
-  startLag: 0
-  endLag: 0
+  startLag: 2
+  endLag: 1
   minSpawnPoint: {x: 0, y: 0}
   maxSpawnPoint: {x: 22, y: 7.5}
-  spawnCount: 5
+  spawnCount: 10
   spawnInterval: 0.5
   prefab: {fileID: 2530473895280127567, guid: 4681b23209b8a784d9fd7bfbb64af0fe, type: 3}
 --- !u!4 &1680457945 stripped
@@ -3234,6 +3248,10 @@ PrefabInstance:
     - target: {fileID: 8696293891802782469, guid: cdeb3dc5902247340be49cd55f04a0be, type: 3}
       propertyPath: m_Name
       value: NormalPattern_2_AttackObject (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8696293891802782469, guid: cdeb3dc5902247340be49cd55f04a0be, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -7515,7 +7533,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1942444404
 Transform:
   m_ObjectHideFlags: 0
@@ -8074,6 +8092,10 @@ PrefabInstance:
     - target: {fileID: 8696293891802782469, guid: cdeb3dc5902247340be49cd55f04a0be, type: 3}
       propertyPath: m_Name
       value: NormalPattern_2_AttackObject
+      objectReference: {fileID: 0}
+    - target: {fileID: 8696293891802782469, guid: cdeb3dc5902247340be49cd55f04a0be, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

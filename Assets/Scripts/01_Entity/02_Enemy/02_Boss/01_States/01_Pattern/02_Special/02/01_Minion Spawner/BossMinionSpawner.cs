@@ -40,6 +40,8 @@ public class BossMinionSpawner : MonoBehaviour
 
     public IEnumerator InitCoroutine()
     {
+        gameObject.SetActive(true);
+
         yield return renderer
             .FadeIn(fadeInDuration)
             .WaitForCompletion();

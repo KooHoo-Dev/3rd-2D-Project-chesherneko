@@ -16,6 +16,10 @@ public class BossNormalPattern_2 : BossPatternStateBase
     [ShowInInspector, ReadOnly] private Animator[] attackObjects;
     [ShowInInspector, ReadOnly] private Vector2[] spawnPoints;
 
+    [SerializeField, TitleGroup("Lag")] private float patternDelay;
+
+    private WaitForSeconds waitForPatternDelay;
+
     protected override void Awake()
     {
         base.Awake();
@@ -26,13 +30,18 @@ public class BossNormalPattern_2 : BossPatternStateBase
 
     protected override void OnEnable()
     {
-        owner.ChangeState(typeof(BossNormalPattern_2));
-
         spawnPoints.Shuffle();
-        StartCoroutine(PatternCoroutine());
+        base.OnEnable();
     }
 
-    protected override void OnDisable() { }
+    protected override void OnDisable()
+    {
+        for (int i = 0; i < spawnCount; i++)
+        {
+            GameObject obj = attackObjects[i].gameObject;
+            obj.SetActive(false);
+        }
+    }
 
     private void InitAttackObjects()
     {
@@ -65,8 +74,16 @@ public class BossNormalPattern_2 : BossPatternStateBase
         }
     }
 
-    private IEnumerator PatternCoroutine()
+    protected override void InitYieldInstructions()
     {
+        base.InitYieldInstructions();
+        waitForPatternDelay = new(patternDelay);
+    }
+
+    protected override IEnumerator PatternCoroutine()
+    {
+        yield return base.PatternCoroutine();
+
         for (int i = 0; i < spawnCount; i++)
         {
             Animator obj = attackObjects[i];
@@ -77,7 +94,7 @@ public class BossNormalPattern_2 : BossPatternStateBase
             obj.gameObject.SetActive(true);
         }
 
-        yield return waitForStartLag;
+        yield return waitForPatternDelay;
 
         for (int i = 0; i < spawnCount; i++)
         {
