@@ -2,6 +2,8 @@ using System.Collections;
 using UnityEngine;
 using DG.Tweening;
 using Sirenix.OdinInspector;
+using System.Collections.Generic;
+using UnityEngine.Pool;
 
 public class BossMinionSpawner : MonoBehaviour
 {
@@ -10,6 +12,7 @@ public class BossMinionSpawner : MonoBehaviour
     [Title("Components")]
     [SerializeField] private new SpriteRenderer renderer;
     [SerializeField] private GameObject hurtBox;
+    [SerializeField] private EnemyCombat myCombat;
 
     [Title("Settings")]
     [SerializeField] private int spawnCount;
@@ -20,10 +23,11 @@ public class BossMinionSpawner : MonoBehaviour
     [SerializeField] private float fadeInDuration;
 
     [Title("References")]
-    [SerializeField] private GameObject[] prefabs;
+    [SerializeField] private BossMinion[] prefabs;
 
-    [Title("Runtime States")]
-    [ShowInInspector, ReadOnly] public int RemainMinionCount = 0;
+    private readonly List<BossMinion> remainMinions = new();
+
+    public bool IsDead => myCombat.IsDead;
 
     private MaterialPropertyBlock propertyBlock;
 
@@ -34,6 +38,8 @@ public class BossMinionSpawner : MonoBehaviour
 
     private void OnDisable()
     {
+        remainMinions.Clear();
+
         hurtBox.SetActive(false);
         SetOutlineAlpha(isActive: false);
     }
@@ -50,25 +56,40 @@ public class BossMinionSpawner : MonoBehaviour
             SpawnRandomMinion();
     }
 
-    public void NotifyMinionDestroyed()
+    public void NotifyMinionDestroyed(BossMinion minion)
     {
-        RemainMinionCount -= 1;
+        if (remainMinions.Contains(minion) == false)
+        {
+            Debug.LogWarning($"해당 Minion({minion.name}은 " +
+                $"정상적으로 생성된 객체가 아닙니다.");
+            return;
+        }
 
-        if (RemainMinionCount == 0)
+        remainMinions.Remove(minion);
+
+        if (remainMinions.Count == 0)
         {
             hurtBox.SetActive(true);
             SetOutlineAlpha(isActive: true);
         }
     }
 
+    public IEnumerator KillAllMinions()
+    {
+        for (int i = remainMinions.Count - 1; i >= 0; i--)
+            remainMinions[i].Kill();
+
+        yield return new WaitUntil(() => remainMinions.Count == 0);
+
+        myCombat.TakeDamage(9999);
+    }
+
     private void SpawnRandomMinion()
     {
-        RemainMinionCount += 1;
-
         int randIdx = Random.Range(0, prefabs.Length);
-        GameObject prefab = prefabs[randIdx];
+        BossMinion prefab = prefabs[randIdx];
 
-        GameObject minion = Instantiate(prefab, transform);
+        BossMinion minion = Instantiate(prefab, transform);
         Transform minionTrans = minion.transform;
 
         float randX = Random.Range(-spawnHalfRange, spawnHalfRange);
@@ -79,7 +100,9 @@ public class BossMinionSpawner : MonoBehaviour
         tempScale.x = lookDir * Mathf.Abs(tempScale.x);
         minionTrans.localScale = tempScale;
 
-        minion.SetActive(true);
+        remainMinions.Add(minion);
+
+        minion.gameObject.SetActive(true);
     }
 
     private void SetOutlineAlpha(bool isActive)

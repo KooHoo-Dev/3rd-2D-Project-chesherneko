@@ -178,7 +178,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b44e07ec2eeb5e04783cb0c1ad3ac257, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BossMinion
-  owner: {fileID: 0}
+  animator: {fileID: 8145625140736288369}
 --- !u!1 &1168414644516879653
 GameObject:
   m_ObjectHideFlags: 0

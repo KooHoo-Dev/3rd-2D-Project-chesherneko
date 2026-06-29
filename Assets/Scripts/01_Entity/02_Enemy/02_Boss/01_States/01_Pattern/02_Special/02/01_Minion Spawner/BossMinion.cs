@@ -3,6 +3,9 @@ using UnityEngine;
 
 public class BossMinion : MonoBehaviour
 {
+    [Title("Components")]
+    [SerializeField] private Animator animator;
+
     [Title("Runtime States")]
     [ShowInInspector, ReadOnly] private BossMinionSpawner owner;
 
@@ -16,6 +19,11 @@ public class BossMinion : MonoBehaviour
 
     private void OnDestroy()
     {
-        owner.NotifyMinionDestroyed();
+        owner.NotifyMinionDestroyed(this);
+    }
+
+    public void Kill()
+    {
+        animator.SetTrigger(AnimationParam.DEAD);
     }
 }
