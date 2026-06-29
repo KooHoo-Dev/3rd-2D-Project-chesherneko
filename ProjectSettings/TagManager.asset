@@ -15,7 +15,7 @@ TagManager:
   - Wall
   - Player_HurtBox
   - Enemy_HurtBox
-  - 
+  - Boss_HurtBox
   - 
   - 
   - 
