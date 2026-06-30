@@ -26,6 +26,7 @@ public class HitBox : MonoBehaviour
     protected virtual void OnDisable()
     {
         checkList.Clear();
+        gameObject.SetActive(false);
     }
 
     protected virtual bool TryHit(Collider2D collision)

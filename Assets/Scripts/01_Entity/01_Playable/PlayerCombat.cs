@@ -1,6 +1,7 @@
 using Sirenix.OdinInspector;
 using UnityEngine;
 
+[DefaultExecutionOrder(-10)]
 public class PlayerCombat : CombatEntity
 {
     public static PlayerCombat LocalPlayer { get; private set; }
@@ -14,6 +15,12 @@ public class PlayerCombat : CombatEntity
     [Title("Runtime State")]
     [ShowInInspector, ReadOnly] private bool isDashInvincible = false;
     [ShowInInspector, ReadOnly] private float dashTime = 0f;
+
+    protected override void Awake()
+    {
+        base.Awake();
+        LocalPlayer = this;
+    }
 
     private void OnEnable()
     {
