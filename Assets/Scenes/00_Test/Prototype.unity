@@ -411,6 +411,7 @@ MonoBehaviour:
   <Stat>k__BackingField:
     <MaxHP>k__BackingField: 1000
     <ATK>k__BackingField: 30
+  hurtBox: {fileID: 1253685683}
   dashInvincibleDuration: 0.1
 --- !u!114 &99453587
 MonoBehaviour:
@@ -2775,8 +2776,9 @@ GameObject:
   m_Component:
   - component: {fileID: 936649950}
   - component: {fileID: 936649949}
+  - component: {fileID: 936649951}
   m_Layer: 0
-  m_Name: Combat Manager
+  m_Name: Managers
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2809,6 +2811,32 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &936649951
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 936649948}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0bccdf6192d0d8439e79d14a0105b9f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerSwitchManager
+  camera: {fileID: 1200373844}
+  currentPlayer:
+    Root: {fileID: 99453585}
+    Controller: {fileID: 99453588}
+    Move: {fileID: 99453587}
+    Combat: {fileID: 99453586}
+  sparePlayers:
+  - Root: {fileID: 1199095848}
+    Controller: {fileID: 1199095853}
+    Move: {fileID: 1199095854}
+    Combat: {fileID: 1199095855}
+  switchJumpHeight: 3
+  switchJumpDuration: 0.5
+  screenOutDistance: 25
 --- !u!4 &993587035 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7906726813409507520, guid: ff8c7f204082c754d903fa9f54aee7c7, type: 3}
@@ -3298,6 +3326,7 @@ MonoBehaviour:
   <Stat>k__BackingField:
     <MaxHP>k__BackingField: 1000
     <ATK>k__BackingField: 50
+  hurtBox: {fileID: 354365673}
   dashInvincibleDuration: 0.05
 --- !u!1 &1200373841
 GameObject:
@@ -3975,7 +4004,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BossCombat
   <Stat>k__BackingField:
-    <MaxHP>k__BackingField: 2500
+    <MaxHP>k__BackingField: 999999999
     <ATK>k__BackingField: 50
   animator: {fileID: 0}
   hitEffect: {fileID: 1468794082}

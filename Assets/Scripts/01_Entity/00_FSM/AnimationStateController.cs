@@ -27,7 +27,7 @@ public abstract class AnimationStateController : MonoBehaviour
     protected abstract void InitStateMap();
     protected abstract void InitDefaultState();
 
-    private void UpdateAnimationState()
+    protected virtual void UpdateAnimationState()
     {
         AnimatorStateInfo stateInfo = Animator.GetCurrentAnimatorStateInfo(0);
 

@@ -1,5 +1,7 @@
 using UnityEngine;
 using Sirenix.OdinInspector;
+using System.Collections;
+using DG.Tweening;
 
 public class PlayerMove : MonoBehaviour
 {
@@ -117,11 +119,15 @@ public class PlayerMove : MonoBehaviour
     [ShowInInspector, ReadOnly, TitleGroup("Dash")] private float dashStartX = 0f;
     [ShowInInspector, ReadOnly, TitleGroup("Dash")] private float dashEndX = 0f;
     [ShowInInspector, ReadOnly, TitleGroup("Dash")] private float dashPreviousX = 0f;
+
+    [ShowInInspector, ReadOnly, TitleGroup("Switch")] private bool isSwitching = false;
     #endregion
 
     #region UNITY METHOD
     private void Update()
     {
+        if (isSwitching) return;
+
         UpdateJumpBufferTime();
         UpdateCoyoteTime();
 
@@ -134,6 +140,8 @@ public class PlayerMove : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (isSwitching) return;
+
         IsGrounded = CheckGrounded();
         UpdateGroundedState();
 
@@ -249,6 +257,35 @@ public class PlayerMove : MonoBehaviour
 
         if (isDashOnCooldown == false && dashCooldownTime > 0f)
             dashCooldownTime = 0f;
+    }
+
+    private void ResetState()
+    {
+        moveInput = Vector2.zero;
+        MoveX = 0f;
+        MoveY = 0f;
+
+        isJumpRequested = false;
+        jumpBufferTime = float.PositiveInfinity;
+
+        isJumping = false;
+        jumpCount = 0;
+
+        isJumpHold = false;
+        jumpHoldTime = 0f;
+
+        IsClingToWall = false;
+        wallDetachInputTime = 0f;
+
+        isDashRequested = false;
+        isDashing = false;
+        dashTime = 0f;
+
+        isDashOnCooldown = false;
+        dashCooldownTime = 0f;
+
+        afterImage.Stop();
+        combat.OnDashFinished();
     }
     #endregion
 
@@ -559,6 +596,25 @@ public class PlayerMove : MonoBehaviour
             afterImage.Stop();
             combat.OnDashFinished();
         }
+    }
+    #endregion
+
+    #region SWITCH METHOD
+    public IEnumerator SwitchJump(Vector2 start, Vector2 end, float height, float duration)
+    {
+        isSwitching = true;
+
+        ResetState();
+        coyoteTime = 0f;
+
+        body.position = start;
+
+        yield return body
+            .DOJump(end, height, 1, duration)
+            .SetEase(Ease.OutQuad)
+            .WaitForCompletion();
+
+        isSwitching = false;
     }
     #endregion
 

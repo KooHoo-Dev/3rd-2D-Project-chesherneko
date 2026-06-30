@@ -22,7 +22,9 @@ public class PlayerController : AnimationStateController
     private AirborneState airborneState = AirborneState.None;
 
     private bool wasClingToWall = false;
+
     public bool IsLockMoveDirection { get; set; } = false;
+    public bool CanControl { get; private set; } = true;
     #endregion
 
     #region UNITY METHOD
@@ -54,6 +56,17 @@ public class PlayerController : AnimationStateController
     {
         int key = Animator.StringToHash(AnimationTag.ANIM_TAG_MOVEMENT);
         defaultState = stateMap[key];
+    }
+
+    protected override void UpdateAnimationState()
+    {
+        if (CanControl == false)
+        {
+            StopMovementInput();
+            Animator.SetFloat(AnimationParam.MOVEMENT, 0f);
+            return;
+        }
+        base.UpdateAnimationState();
     }
     #endregion
 
@@ -181,6 +194,35 @@ public class PlayerController : AnimationStateController
     {
         if (Animator.GetBool(AnimationParam.IS_ATTACK) == false && Key.X.WasPressed())
             Animator.SetBool(AnimationParam.IS_ATTACK, true);
+    }
+    #endregion
+
+    #region PUBLIC METHOD
+    public bool LockControl() => CanControl = false;
+    public bool ReleaseControl() => CanControl = true;
+
+    public bool IsBusyForSwitch()
+    {
+        AnimatorStateInfo stateInfo = Animator.GetCurrentAnimatorStateInfo(0);
+
+        int tagHash = stateInfo.tagHash;
+
+        bool isBusy =
+            tagHash == Animator.StringToHash(AnimationTag.ANIM_TAG_ATTACK) ||
+            tagHash == Animator.StringToHash(AnimationTag.ANIM_TAG_ATTACK_END) ||
+            tagHash == Animator.StringToHash(AnimationTag.ANIM_TAG_SKILL);
+
+        return isBusy;
+    }
+
+    public bool IsCurrentAnimationFinished()
+    {
+        AnimatorStateInfo stateInfo = Animator.GetCurrentAnimatorStateInfo(0);
+
+        if (Animator.IsInTransition(0))
+            return false;
+
+        return stateInfo.normalizedTime >= 1f;
     }
     #endregion
 }

@@ -5,6 +5,9 @@ public class PlayerCombat : CombatEntity
 {
     public static PlayerCombat LocalPlayer { get; private set; }
 
+    [Title("Components")]
+    [SerializeField] private GameObject hurtBox;
+
     [Title("Settings")]
     [SerializeField] private float dashInvincibleDuration = 0.05f;
 
@@ -58,4 +61,7 @@ public class PlayerCombat : CombatEntity
         dashTime = 0f;
         isDashInvincible = false;
     }
+
+    public void SetHurtBoxActive(bool isActive)
+        => hurtBox.SetActive(isActive);
 }

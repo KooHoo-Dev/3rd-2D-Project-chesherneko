@@ -1,16 +1,119 @@
+using System;
+using System.Collections;
+using Unity.Cinemachine;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerSwitchManager : MonoBehaviour
 {
-    //교체 정리해보자!
-    //1. 교체 시 공유해야 할 데이터
-    //  -현재 HP
-    //  -현재 위치
-    //  -
-    //2. 교체 시 교차해야 할 행동(?)
-    //  -나와있던 캐릭터는 현재 행동을 마무리짓고, 화면 밖으로 점프
-    //  -나와야 할 캐릭터는 공유 받은 현재 위치로 점프 및 착지
-    //  -해당 행동에서 캐릭터는 '장애물'의 영향을 받지 않음
-    //  -만약 QTE 게이지가 전부 찬 상태에서 교체 시, 착지와 동시에 QTE 스킬 발동
-    //  -나와있던 캐릭터는 조작 권한을 상실, 나올 캐릭터는 착지 / QTE 스킬이 끝났을 때 조작 권한 획득
+    [System.Serializable]
+    private class PlayerSlot
+    {
+        public GameObject Root;
+        public PlayerController Controller;
+        public PlayerMove Move;
+        public PlayerCombat Combat;
+    }
+
+    [SerializeField] private new CinemachineCamera camera;
+
+    [SerializeField] private PlayerSlot currentPlayer;
+    [SerializeField] private PlayerSlot[] sparePlayers;
+
+    [SerializeField] private float switchJumpHeight = 3f;
+    [SerializeField] private float switchJumpDuration = 0.5f;
+    [SerializeField] private float screenOutDistance = 10f;
+
+    private bool isSwitching = false;
+
+    private void Update()
+    {
+        if (isSwitching) return;
+
+        if (Key.Digit1.WasPressed())
+            StartCoroutine(SwitchCoroutine(0));
+    }
+
+    private IEnumerator SwitchCoroutine(int nextIdx)
+    {
+        isSwitching = true;
+
+        PlayerSlot curr = currentPlayer;
+        PlayerSlot next = sparePlayers[nextIdx];
+
+        curr.Controller.LockControl();
+        curr.Combat.SetHurtBoxActive(false);
+
+        Transform currTrans = curr.Root.transform;
+
+        Vector2 switchPoint = currTrans.position;
+        float dir = currTrans.localScale.x > 0f ? 1f : -1f;
+
+        Vector2 goalPoint = switchPoint + dir * screenOutDistance * Vector2.left;
+
+        camera.Follow = null;
+
+        next.Root.transform.position = goalPoint;
+        next.Root.transform.localScale = curr.Root.transform.localScale;
+        next.Root.SetActive(true);
+        next.Controller.LockControl();
+        next.Combat.SetHurtBoxActive(false);
+
+        bool switchOutDone = false;
+        bool switchInDone = false;
+
+        StartCoroutine(SwitchOutCoroutine(curr, switchPoint, goalPoint, () => switchOutDone = true));
+        StartCoroutine(SwitchInCoroutine(next, goalPoint, switchPoint, () => switchInDone = true));
+
+        yield return new WaitUntil(() => switchOutDone && switchInDone);
+
+        currentPlayer.Root.SetActive(false);
+
+        currentPlayer = next;
+        sparePlayers[nextIdx] = curr;
+
+        isSwitching = false;
+    }
+
+    private IEnumerator SwitchOutCoroutine(PlayerSlot curr,
+        Vector2 start, Vector2 end, Action onDone)
+    {
+        yield return WaitUntilSwitchOutReady(curr.Controller);
+
+        yield return curr.Move.SwitchJump(
+            start, end,
+            switchJumpHeight, switchJumpDuration
+        );
+
+        onDone?.Invoke();
+    }
+
+    private IEnumerator SwitchInCoroutine(PlayerSlot next,
+        Vector2 start, Vector2 end, Action onDone)
+    {
+        yield return next.Move.SwitchJump(
+            start, end,
+            switchJumpHeight, switchJumpDuration
+        );
+
+        onDone?.Invoke();
+
+        camera.Follow = next.Root.transform;
+
+        next.Controller.ReleaseControl();
+        next.Combat.SetHurtBoxActive(true);
+    }
+
+    private IEnumerator WaitUntilSwitchOutReady(PlayerController player)
+    {
+        player.LockControl();
+
+        while (true)
+        {
+            if (player.IsBusyForSwitch() == false) break;
+            if (player.IsCurrentAnimationFinished()) break;
+
+            yield return null;
+        }
+    }
 }

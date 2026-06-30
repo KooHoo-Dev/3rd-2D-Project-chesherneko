@@ -30,7 +30,6 @@ public class HitBox : MonoBehaviour
 
     protected virtual bool TryHit(Collider2D collision)
     {
-        Debug.Log(collision.name);
         if (HitLayerMask.Contains(collision) == false) return false;
         if (checkList.Contains(collision)) return false;
 
