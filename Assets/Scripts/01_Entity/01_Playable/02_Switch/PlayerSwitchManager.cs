@@ -4,7 +4,7 @@ using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Sirenix.OdinInspector;
-using System.Runtime.CompilerServices;
+using DG.Tweening;
 
 public class PlayerSwitchManager : MonoSingleton<PlayerSwitchManager>
 {
@@ -69,12 +69,6 @@ public class PlayerSwitchManager : MonoSingleton<PlayerSwitchManager>
 
     private IEnumerator SwitchCoroutine(int nextIdx)
     {
-        //이거 Jump를 살짝 변경?
-        //1. next의 위치는 등장 위치로
-        //2. prev의 위치는 퇴장 위치로
-        //3. next의 'Root'위치는 퇴장 위치로
-        //4. prev의 'Root'위치는 등장 위치로
-        //5. next와 prev의 'Root'위치를 LocalPosition (0, 0)으로 Jump
         isSwitching = true;
         isSwitchOnCooldown = true;
 
@@ -93,8 +87,7 @@ public class PlayerSwitchManager : MonoSingleton<PlayerSwitchManager>
 
         camera.Follow = null;
 
-        next.gameObject.transform.position = goalPoint;
-        next.gameObject.transform.localScale = currTrans.localScale;
+        next.Transform.localScale = currTrans.localScale;
         next.gameObject.SetActive(true);
         next.LockControl();
         next.EnableInvincibility();
@@ -120,10 +113,14 @@ public class PlayerSwitchManager : MonoSingleton<PlayerSwitchManager>
 
         yield return WaitUntilSwitchOutReady(curr);
 
-        yield return curr.Movement.SwitchJump(
-            start, end,
-            switchJumpHeight, switchJumpDuration
-        );
+        curr.Transform.position = start;
+
+        yield return curr.Transform.DOJump(
+            end, 
+            switchJumpHeight, 
+            1, 
+            switchJumpDuration
+        ).WaitForCompletion();
 
         curr.gameObject.SetActive(false);
 
@@ -135,10 +132,17 @@ public class PlayerSwitchManager : MonoSingleton<PlayerSwitchManager>
     {
         next.Movement.ResetState();
 
-        yield return next.Movement.SwitchJump(
-            start, end,
-            switchJumpHeight, switchJumpDuration
-        );
+        next.Transform.position = end;
+        next.RootTrans.position = start;
+
+        Player.SwitchLocalPlayer(curr, next);
+
+        yield return next.RootTrans.DOLocalJump(
+            Vector2.zero, 
+            switchJumpHeight, 
+            1, 
+            switchJumpDuration
+        ).WaitForCompletion();
 
         onDone?.Invoke();
 
@@ -146,8 +150,6 @@ public class PlayerSwitchManager : MonoSingleton<PlayerSwitchManager>
 
         next.UnlockControl();
         next.DisableInvincibility();
-
-        Player.SwitchLocalPlayer(curr, next);
     }
 
     private IEnumerator WaitUntilSwitchOutReady(Player player)

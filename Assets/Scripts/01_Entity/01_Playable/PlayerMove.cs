@@ -7,13 +7,15 @@ public class PlayerMove : MonoBehaviour
 {
     #region FIELDS
     [Title("Components")]
+    [SerializeField] private Player owner;
     [SerializeField] private Rigidbody2D body;
     [SerializeField] private new Collider2D collider;
     [SerializeField] private Afterimage afterImage;
-    [SerializeField] private PlayerCombat combat;
 
     [Title("Settings")]
     [SerializeField] private PlayerMoveSettings settings;
+
+    public PlayerCombat Combat => owner.Combat;
     #endregion  
 
     #region RUNTIME STATE FIELDS
@@ -51,16 +53,13 @@ public class PlayerMove : MonoBehaviour
     [ShowInInspector, ReadOnly] private float dashEndX = 0f;
     [ShowInInspector, ReadOnly] private float dashPreviousX = 0f;
 
-    [Space] //Switch States
-    [ShowInInspector, ReadOnly] private bool isSwitching = false;
-
     private bool IsBonusPeakSection => Mathf.Abs(MoveY) < settings.JumpHangThreshold;
     #endregion
 
     #region UNITY METHOD
     private void Update()
     {
-        if (isSwitching) return;
+        if (owner.IsLockControl) return;
 
         UpdateJumpBufferTime();
         UpdateCoyoteTime();
@@ -74,7 +73,7 @@ public class PlayerMove : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (isSwitching) return;
+        if (owner.IsLockControl) return;
 
         IsGrounded = CheckGrounded();
         UpdateGroundedState();
@@ -196,6 +195,7 @@ public class PlayerMove : MonoBehaviour
     public void ResetState()
     {
         moveInput = Vector2.zero;
+        MoveY = 0f;
 
         isJumpRequested = false;
 
@@ -219,7 +219,7 @@ public class PlayerMove : MonoBehaviour
         dashCooldownTime = 0f;
 
         afterImage.Stop();
-        combat.OnDashFinished();
+        Combat.OnDashFinished();
     }
     #endregion
 
@@ -484,7 +484,7 @@ public class PlayerMove : MonoBehaviour
         isDashing = true;
         isDashOnCooldown = true;
 
-        combat.OnDashStarted();
+        Combat.OnDashStarted();
 
         if (IsGrounded) coyoteTime = float.PositiveInfinity;
 
@@ -528,26 +528,12 @@ public class PlayerMove : MonoBehaviour
                 LastMoveDirection;
 
             afterImage.Stop();
-            combat.OnDashFinished();
+            Combat.OnDashFinished();
         }
     }
     #endregion
 
     #region SWITCH METHOD
-    public IEnumerator SwitchJump(Vector2 start, Vector2 end, float height, float duration)
-    {
-        isSwitching = true;
-
-        body.position = start;
-
-        yield return body
-            .DOJump(end, height, 1, duration)
-            .SetEase(Ease.OutQuad)
-            .WaitForCompletion();
-
-        isSwitching = false;
-    }
-
     public void SyncPrevPlayerState(PlayerMoveSyncData syncData)
     {
         MoveX = syncData.MoveX;

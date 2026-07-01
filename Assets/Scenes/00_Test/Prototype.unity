@@ -426,10 +426,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24b3b76c3a1ca1542b7f196924e3fc2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMove
+  owner: {fileID: 99453592}
   body: {fileID: 99453590}
   collider: {fileID: 99453589}
   afterImage: {fileID: 1495330237}
-  combat: {fileID: 99453586}
   settings: {fileID: 11400000, guid: 0af478fa8e67a0c4bbd19ed9e0437fb2, type: 2}
 --- !u!114 &99453588
 MonoBehaviour:
@@ -444,7 +444,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   <Animator>k__BackingField: {fileID: 1970520614}
-  movement: {fileID: 99453587}
+  owner: {fileID: 99453592}
   fallTransitionThreshold: -1
 --- !u!61 &99453589
 BoxCollider2D:
@@ -548,6 +548,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4069f372873cc8649bf0ed45afad92c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Player
+  <RootTrans>k__BackingField: {fileID: 1970520615}
   <Controller>k__BackingField: {fileID: 99453588}
   <Movement>k__BackingField: {fileID: 99453587}
   <Combat>k__BackingField: {fileID: 99453586}
@@ -3235,7 +3236,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   <Animator>k__BackingField: {fileID: 199699750}
-  movement: {fileID: 1199095854}
+  owner: {fileID: 1199095856}
   fallTransitionThreshold: -1
 --- !u!114 &1199095854
 MonoBehaviour:
@@ -3249,10 +3250,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24b3b76c3a1ca1542b7f196924e3fc2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMove
+  owner: {fileID: 1199095856}
   body: {fileID: 1199095851}
   collider: {fileID: 1199095850}
   afterImage: {fileID: 804958962}
-  combat: {fileID: 1199095855}
   settings: {fileID: 11400000, guid: 0af478fa8e67a0c4bbd19ed9e0437fb2, type: 2}
 --- !u!114 &1199095855
 MonoBehaviour:
@@ -3282,6 +3283,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4069f372873cc8649bf0ed45afad92c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Player
+  <RootTrans>k__BackingField: {fileID: 199699752}
   <Controller>k__BackingField: {fileID: 1199095853}
   <Movement>k__BackingField: {fileID: 1199095854}
   <Combat>k__BackingField: {fileID: 1199095855}

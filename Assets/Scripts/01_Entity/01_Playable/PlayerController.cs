@@ -14,7 +14,7 @@ public class PlayerController : AnimationStateController
 {
     #region FIELDS
     [TitleGroup("Components")]
-    [SerializeField] private PlayerMove movement;
+    [SerializeField] private Player owner;
 
     [Title("Settings")]
     [SerializeField] private float fallTransitionThreshold = -1f;
@@ -24,7 +24,8 @@ public class PlayerController : AnimationStateController
     private bool wasClingToWall = false;
 
     public bool IsLockMoveDirection { get; set; } = false;
-    public bool CanControl { get; private set; } = true;
+
+    public PlayerMove Movement => owner.Movement;
     #endregion
 
     #region UNITY METHOD
@@ -60,12 +61,8 @@ public class PlayerController : AnimationStateController
 
     protected override void UpdateAnimationState()
     {
-        if (CanControl == false)
-        {
-            StopMovementInput();
-            Animator.SetFloat(AnimationParam.MOVEMENT, 0f);
-            return;
-        }
+        if (owner.IsLockControl) return;
+
         base.UpdateAnimationState();
     }
     #endregion
@@ -74,7 +71,7 @@ public class PlayerController : AnimationStateController
     private void UpdateGroundedState()
     {
         //땅인지 여부는 계속해서 갱신
-        bool isGrounded = movement.IsGrounded;
+        bool isGrounded = Movement.IsGrounded;
         Animator.SetBool(AnimationParam.IS_GROUNDED, isGrounded);
 
         if (isGrounded)
@@ -83,12 +80,12 @@ public class PlayerController : AnimationStateController
             return;
         }
 
-        if (movement.IsClingToWall) return;
+        if (Movement.IsClingToWall) return;
         if (Animator.GetBool(AnimationParam.IS_ATTACKING)) return;
 
         //airborneState에 따라 Jump 및 Fall 트리거 실행
         AirborneState nextState =
-            movement.MoveY > fallTransitionThreshold ?
+            Movement.MoveY > fallTransitionThreshold ?
             AirborneState.Jumping : AirborneState.Falling;
 
         if (airborneState == nextState) return;
@@ -107,17 +104,17 @@ public class PlayerController : AnimationStateController
 
     private void UpdateWallClingState()
     {
-        bool isClingToWall = movement.IsClingToWall;
+        bool isClingToWall = Movement.IsClingToWall;
 
         if (isClingToWall == wasClingToWall) return;
 
         Animator.SetBool(AnimationParam.IS_WALL_CLING, isClingToWall);
 
-        float lastDir = movement.LastMoveDirection;
+        float lastDir = Movement.LastMoveDirection;
         transform.localScale = new Vector2(lastDir * -1f, 1f);
 
         if (isClingToWall) airborneState = AirborneState.None;
-        else movement.SwitchMoveDirection();
+        else Movement.SwitchMoveDirection();
 
         wasClingToWall = isClingToWall;
     }
@@ -130,7 +127,7 @@ public class PlayerController : AnimationStateController
 
         if (IsLockMoveDirection == false)
         {
-            float lastDir = movement.LastMoveDirection;
+            float lastDir = Movement.LastMoveDirection;
             float currentDir = transform.localScale.x;
 
             bool shouldChangeDir =
@@ -144,7 +141,7 @@ public class PlayerController : AnimationStateController
         float inputXAbs = Mathf.Abs(input.x);
         Animator.SetFloat(AnimationParam.MOVEMENT, inputXAbs);
 
-        movement.SetMoveInput(input);
+        Movement.SetMoveInput(input);
     }
 
     /// <summary>
@@ -152,7 +149,7 @@ public class PlayerController : AnimationStateController
     /// </summary>
     public void HandleAirMoveInput()
     {
-        if (movement.IsGrounded && movement.MoveY == 0f)
+        if (Movement.IsGrounded && Movement.MoveY == 0f)
         {
             StopMovementInput();
             return;
@@ -162,23 +159,23 @@ public class PlayerController : AnimationStateController
 
     public void StopMovementInput()
     {
-        movement.SetMoveInput(Vector2.zero);
+        Movement.SetMoveInput(Vector2.zero);
     }
 
     public void HandleJumpInput()
     {
         if (Key.Space.WasPressed())
-            movement.RequestJump();
+            Movement.RequestJump();
 
         if (Key.Space.WasReleased())
-            movement.ReleaseJump();
+            Movement.ReleaseJump();
     }
 
     public void HandleDashInput()
     {
         if (Key.LeftShift.WasPressed())
         {
-            bool canDash = movement.RequestDash();
+            bool canDash = Movement.RequestDash();
             if (canDash) Animator.SetTrigger(AnimationParam.DASH);
         }
     }
@@ -197,8 +194,6 @@ public class PlayerController : AnimationStateController
     #endregion
 
     #region PUBLIC METHOD
-    public void SetControllable(bool canControl) => CanControl = canControl;
-
     public bool IsBusyForSwitch()
     {
         AnimatorStateInfo stateInfo = Animator.GetCurrentAnimatorStateInfo(0);

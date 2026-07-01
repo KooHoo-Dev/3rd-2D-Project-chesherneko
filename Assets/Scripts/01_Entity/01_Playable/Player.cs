@@ -20,9 +20,15 @@ public class Player : MonoBehaviour
     public static Player LocalPlayer { get; private set; }
 
     [field: Title("Components")]
+    [field: SerializeField] public Transform RootTrans { get; private set; }
     [field: SerializeField] public PlayerController Controller { get; private set; }
     [field: SerializeField] public PlayerMove Movement { get; private set; }
     [field: SerializeField] public PlayerCombat Combat { get; private set; }
+
+    [Title("Runtime States")]
+    [ShowInInspector] public bool IsLockControl { get; private set; } = false;
+
+    public Transform Transform => gameObject.transform;
     #endregion
 
     #region UNITY METHODS
@@ -68,8 +74,8 @@ public class Player : MonoBehaviour
     #endregion
 
     #region PUBLIC METHODS
-    public void LockControl() => Controller.SetControllable(false);
-    public void UnlockControl() => Controller.SetControllable(true);
+    public void LockControl() => IsLockControl = true;
+    public void UnlockControl() => IsLockControl = false;
 
     public void EnableInvincibility() => Combat.SetHurtBoxActive(false);
     public void DisableInvincibility() => Combat.SetHurtBoxActive(true);
