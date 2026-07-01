@@ -15,11 +15,9 @@ public class EnemyCombat : CombatEntity
 
     [SerializeField, TitleGroup("Settings")] private HitReactionType hitReactionType;
 
-    public bool IsDead => Stat.IsDead;
-
     public override void TakeDamage(int damage)
     {
-        bool isDead = Stat.ApplyDamage(damage);
+        bool isDead = ApplyDamage(damage);
 
         if (isDead)
         {

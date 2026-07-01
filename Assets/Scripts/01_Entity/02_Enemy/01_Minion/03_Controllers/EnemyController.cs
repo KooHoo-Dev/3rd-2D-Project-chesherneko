@@ -36,7 +36,18 @@ public class EnemyController : AnimationStateController
     [ShowInInspector, ReadOnly, TitleGroup("Patrol")] private float patrolY;
 
     [PropertySpace]
-    [ShowInInspector, ReadOnly, TitleGroup("Chase")] public Transform Target { get; private set; }
+    [ShowInInspector, ReadOnly, TitleGroup("Chase")] public Transform Target
+    {
+        get
+        {
+            PlayerCombat localPlayer = PlayerCombat.LocalPlayer;
+
+            if (localPlayer == null) 
+                return null;
+
+            return localPlayer.transform;
+        }
+    }
 
     [PropertySpace]
     [ShowInInspector, ReadOnly, TitleGroup("Attack")] public bool IsAttackRequested { get; set; } = false;
@@ -69,8 +80,6 @@ public class EnemyController : AnimationStateController
         patrolMinX = Mathf.Min(startX, pointX);
         patrolMaxX = Mathf.Max(startX, pointX);
         patrolY = transform.position.y;
-
-        Target = GameObject.FindWithTag("Player").transform;
     }
     #endregion
 

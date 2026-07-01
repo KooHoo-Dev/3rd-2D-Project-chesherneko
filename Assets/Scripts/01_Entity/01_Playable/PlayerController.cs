@@ -152,8 +152,7 @@ public class PlayerController : AnimationStateController
     /// </summary>
     public void HandleAirMoveInput()
     {
-        if (movement.IsGrounded &&
-            movement.MoveY == 0f)
+        if (movement.IsGrounded && movement.MoveY == 0f)
         {
             StopMovementInput();
             return;
@@ -198,8 +197,7 @@ public class PlayerController : AnimationStateController
     #endregion
 
     #region PUBLIC METHOD
-    public bool LockControl() => CanControl = false;
-    public bool ReleaseControl() => CanControl = true;
+    public void SetControllable(bool canControl) => CanControl = canControl;
 
     public bool IsBusyForSwitch()
     {

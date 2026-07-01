@@ -177,6 +177,7 @@ MonoBehaviour:
     m_Bits: 192
   attackRange: 0.75
   enhancedAttackChance: 3
+  <CanRespawn>k__BackingField: 1
   <RespawnDelay>k__BackingField: 10
   renderer: {fileID: 4274774059746557556}
   suicideHPRatioThreshold: 0.3
@@ -192,9 +193,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aeeffd4262638d741b53e611b0789a37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyCombat
-  <Stat>k__BackingField:
-    <MaxHP>k__BackingField: 500
-    <ATK>k__BackingField: 25
+  stat: {fileID: 11400000, guid: 3625e68b88256054ab00165ebddc625b, type: 2}
   animator: {fileID: 8145625140736288369}
   hitEffect: {fileID: 1130554059386032188}
   hitReactionType: 1
@@ -243,8 +242,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e5781d1cd25cc24c82a2a28d0467099, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HitBox
-  <DamageMult>k__BackingField: 1
-  <HitLayerMask>k__BackingField:
+  damageMult: 1
+  hitLayerMask:
     serializedVersion: 2
     m_Bits: 256
 --- !u!61 &399062332904158703
@@ -612,8 +611,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e5781d1cd25cc24c82a2a28d0467099, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HitBox
-  <DamageMult>k__BackingField: 10
-  <HitLayerMask>k__BackingField:
+  damageMult: 5
+  hitLayerMask:
     serializedVersion: 2
     m_Bits: 256
 --- !u!61 &2728180172681583298

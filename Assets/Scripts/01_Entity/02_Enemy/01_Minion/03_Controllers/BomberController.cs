@@ -17,7 +17,7 @@ public class BomberController : EnemyController
     {
         int id;
 
-        float hpRatio = combat.Stat.GetHPRatio();
+        float hpRatio = combat.HPRatio;
 
         if (hpRatio <= suicideHPRatioThreshold)
         {

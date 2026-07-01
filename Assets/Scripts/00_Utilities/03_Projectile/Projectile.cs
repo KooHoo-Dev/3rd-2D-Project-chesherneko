@@ -1,6 +1,4 @@
-using DG.Tweening;
 using Sirenix.OdinInspector;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class Projectile : HitBox
@@ -16,7 +14,6 @@ public class Projectile : HitBox
     [SerializeField] private float checkRadius = 0.125f;
     [SerializeField] private float checkDistance = 0.05f;
     [SerializeField] private Vector3 checkOffset;
-    [SerializeField] private LayerMask hitLayerMask;
 
     [Title("Runtime State")]
     [ShowInInspector, ReadOnly] private bool isShooted = false;

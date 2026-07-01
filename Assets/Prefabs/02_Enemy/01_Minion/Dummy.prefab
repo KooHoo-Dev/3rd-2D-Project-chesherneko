@@ -129,9 +129,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aeeffd4262638d741b53e611b0789a37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DummyCombat
-  <Stat>k__BackingField:
-    <MaxHP>k__BackingField: 999999999
-    <ATK>k__BackingField: 0
+  stat: {fileID: 11400000, guid: bd44851601bab0c48b0b10306aeea0c2, type: 2}
   animator: {fileID: 7771794057304659379}
   hitEffect: {fileID: 1252829748347679446}
   hitReactionType: 2

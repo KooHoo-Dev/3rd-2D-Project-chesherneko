@@ -1,7 +1,6 @@
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-[DefaultExecutionOrder(-10)]
 public class PlayerCombat : CombatEntity
 {
     public static PlayerCombat LocalPlayer { get; private set; }
@@ -11,16 +10,13 @@ public class PlayerCombat : CombatEntity
 
     [Title("Settings")]
     [SerializeField] private float dashInvincibleDuration = 0.05f;
+    [SerializeField] private float qteGaugeGainMult = 4f;
 
     [Title("Runtime State")]
     [ShowInInspector, ReadOnly] private bool isDashInvincible = false;
     [ShowInInspector, ReadOnly] private float dashTime = 0f;
 
-    protected override void Awake()
-    {
-        base.Awake();
-        LocalPlayer = this;
-    }
+    public int CurrentHP => currentHP;
 
     private void OnEnable()
     {
@@ -44,7 +40,7 @@ public class PlayerCombat : CombatEntity
     {
         if (isDashInvincible)
         {
-            Debug.Log($"대시 무적! {sender.name}의 데미지({@event.Amount})를 무시!");
+            PlayerSwitchManager.Instance.GainQTEGauge(qteGaugeGainMult);
             return false;
         }
 
@@ -53,12 +49,18 @@ public class PlayerCombat : CombatEntity
 
     public override void TakeDamage(int damage)
     {
+        ApplyDamage(damage);
         Debug.Log($"{damage}만큼 데미지 받음!");
     }
 
     public override void TakeHeal(int heal)
     {
+        ApplyHeal(heal);
+    }
 
+    public void SyncPrevPlayerState(PlayerCombatSyncData syncData)
+    {
+        currentHP = syncData.CurrentHP;
     }
 
     public void OnDashStarted() => isDashInvincible = true;

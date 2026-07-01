@@ -3,48 +3,88 @@ using System.Collections;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Sirenix.OdinInspector;
+using System.Runtime.CompilerServices;
 
-public class PlayerSwitchManager : MonoBehaviour
+public class PlayerSwitchManager : MonoSingleton<PlayerSwitchManager>
 {
-    [System.Serializable]
-    private class PlayerSlot
-    {
-        public GameObject Root;
-        public PlayerController Controller;
-        public PlayerMove Move;
-        public PlayerCombat Combat;
-    }
-
+    #region FIELDS
+    [Title("Components")]
     [SerializeField] private new CinemachineCamera camera;
 
-    [SerializeField] private PlayerSlot currentPlayer;
-    [SerializeField] private PlayerSlot[] sparePlayers;
+    [Title("References")]
+    [SerializeField] private Player currentPlayer;
+    [SerializeField] private Player[] sparePlayers;
 
+    [Title("Settings")]
     [SerializeField] private float switchJumpHeight = 3f;
     [SerializeField] private float switchJumpDuration = 0.5f;
     [SerializeField] private float screenOutDistance = 10f;
 
-    private bool isSwitching = false;
+    [Space]
+    [SerializeField] private float switchCooldown = 10f;
 
+    [Space]
+    [SerializeField] private float qteGaugeMax = 100f;
+    [SerializeField] private float qteGaugeGainUnit = 5f;
+
+    [Title("Runtime States")]
+    [ShowInInspector, ReadOnly] private bool isSwitching = false;
+
+    [Space]
+    [ShowInInspector, ReadOnly] private bool isSwitchOnCooldown = false;
+    [ShowInInspector, ReadOnly] private float switchCooldownTime = 0f;
+
+    [Space]
+    [ShowInInspector, ReadOnly] private float qteGauge = 0f;
+    #endregion
+
+    #region UNITY METHODS
     private void Update()
     {
         if (isSwitching) return;
 
+        if (isSwitchOnCooldown)
+        {
+            UpdateSwitchCooldownTime();
+            return;
+        }
+
         if (Key.Digit1.WasPressed())
             StartCoroutine(SwitchCoroutine(0));
+    }
+    #endregion
+
+    #region PRIVATE METHODS
+    private void UpdateSwitchCooldownTime()
+    {
+        switchCooldownTime += Time.deltaTime;
+
+        if (switchCooldownTime > switchCooldown)
+        {
+            isSwitchOnCooldown = false;
+            switchCooldownTime = 0f;
+        }
     }
 
     private IEnumerator SwitchCoroutine(int nextIdx)
     {
+        //이거 Jump를 살짝 변경?
+        //1. next의 위치는 등장 위치로
+        //2. prev의 위치는 퇴장 위치로
+        //3. next의 'Root'위치는 퇴장 위치로
+        //4. prev의 'Root'위치는 등장 위치로
+        //5. next와 prev의 'Root'위치를 LocalPosition (0, 0)으로 Jump
         isSwitching = true;
+        isSwitchOnCooldown = true;
 
-        PlayerSlot curr = currentPlayer;
-        PlayerSlot next = sparePlayers[nextIdx];
+        Player curr = currentPlayer;
+        Player next = sparePlayers[nextIdx];
 
-        curr.Controller.LockControl();
-        curr.Combat.SetHurtBoxActive(false);
+        curr.LockControl();
+        curr.EnableInvincibility();
 
-        Transform currTrans = curr.Root.transform;
+        Transform currTrans = curr.gameObject.transform;
 
         Vector2 switchPoint = currTrans.position;
         float dir = currTrans.localScale.x > 0f ? 1f : -1f;
@@ -53,21 +93,19 @@ public class PlayerSwitchManager : MonoBehaviour
 
         camera.Follow = null;
 
-        next.Root.transform.position = goalPoint;
-        next.Root.transform.localScale = curr.Root.transform.localScale;
-        next.Root.SetActive(true);
-        next.Controller.LockControl();
-        next.Combat.SetHurtBoxActive(false);
+        next.gameObject.transform.position = goalPoint;
+        next.gameObject.transform.localScale = currTrans.localScale;
+        next.gameObject.SetActive(true);
+        next.LockControl();
+        next.EnableInvincibility();
 
         bool switchOutDone = false;
         bool switchInDone = false;
 
         StartCoroutine(SwitchOutCoroutine(curr, switchPoint, goalPoint, () => switchOutDone = true));
-        StartCoroutine(SwitchInCoroutine(next, goalPoint, switchPoint, () => switchInDone = true));
+        StartCoroutine(SwitchInCoroutine(curr, next, goalPoint, switchPoint, () => switchInDone = true));
 
         yield return new WaitUntil(() => switchOutDone && switchInDone);
-
-        currentPlayer.Root.SetActive(false);
 
         currentPlayer = next;
         sparePlayers[nextIdx] = curr;
@@ -75,45 +113,62 @@ public class PlayerSwitchManager : MonoBehaviour
         isSwitching = false;
     }
 
-    private IEnumerator SwitchOutCoroutine(PlayerSlot curr,
+    private IEnumerator SwitchOutCoroutine(Player curr,
         Vector2 start, Vector2 end, Action onDone)
     {
-        yield return WaitUntilSwitchOutReady(curr.Controller);
+        curr.Movement.ResetState();
 
-        yield return curr.Move.SwitchJump(
+        yield return WaitUntilSwitchOutReady(curr);
+
+        yield return curr.Movement.SwitchJump(
+            start, end,
+            switchJumpHeight, switchJumpDuration
+        );
+
+        curr.gameObject.SetActive(false);
+
+        onDone?.Invoke();
+    }
+
+    private IEnumerator SwitchInCoroutine(Player curr, Player next,
+        Vector2 start, Vector2 end, Action onDone)
+    {
+        next.Movement.ResetState();
+
+        yield return next.Movement.SwitchJump(
             start, end,
             switchJumpHeight, switchJumpDuration
         );
 
         onDone?.Invoke();
+
+        camera.Follow = next.gameObject.transform;
+
+        next.UnlockControl();
+        next.DisableInvincibility();
+
+        Player.SwitchLocalPlayer(curr, next);
     }
 
-    private IEnumerator SwitchInCoroutine(PlayerSlot next,
-        Vector2 start, Vector2 end, Action onDone)
-    {
-        yield return next.Move.SwitchJump(
-            start, end,
-            switchJumpHeight, switchJumpDuration
-        );
-
-        onDone?.Invoke();
-
-        camera.Follow = next.Root.transform;
-
-        next.Controller.ReleaseControl();
-        next.Combat.SetHurtBoxActive(true);
-    }
-
-    private IEnumerator WaitUntilSwitchOutReady(PlayerController player)
+    private IEnumerator WaitUntilSwitchOutReady(Player player)
     {
         player.LockControl();
 
         while (true)
         {
-            if (player.IsBusyForSwitch() == false) break;
-            if (player.IsCurrentAnimationFinished()) break;
+            if (player.Controller.IsBusyForSwitch() == false) break;
+            if (player.Controller.IsCurrentAnimationFinished()) break;
 
             yield return null;
         }
     }
+    #endregion
+
+    #region PUBLIC METHODS
+    public void GainQTEGauge(float mult)
+    {
+        qteGauge += qteGaugeGainUnit * mult;
+        qteGauge = Mathf.Clamp(qteGauge, 0f, qteGaugeMax);
+    }
+    #endregion
 }

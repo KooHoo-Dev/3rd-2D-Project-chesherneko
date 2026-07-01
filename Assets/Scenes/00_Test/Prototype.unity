@@ -363,13 +363,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 39526741}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8e5781d1cd25cc24c82a2a28d0467099, type: 3}
+  m_Script: {fileID: 11500000, guid: b4d9c2fd800bdfb46876686c6a5d63d5, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::HitBox
-  <DamageMult>k__BackingField: 1.5
-  <HitLayerMask>k__BackingField:
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerHitBox
+  damageMult: 1.5
+  hitLayerMask:
     serializedVersion: 2
     m_Bits: 512
+  qteGaugeGainMult: 1.5
 --- !u!4 &91343486 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5522797963348077238, guid: 4681b23209b8a784d9fd7bfbb64af0fe, type: 3}
@@ -386,6 +387,7 @@ GameObject:
   - component: {fileID: 99453591}
   - component: {fileID: 99453590}
   - component: {fileID: 99453589}
+  - component: {fileID: 99453592}
   - component: {fileID: 99453588}
   - component: {fileID: 99453587}
   - component: {fileID: 99453586}
@@ -408,11 +410,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac949e32dbe2943469d5eedfacaa74fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerCombat
-  <Stat>k__BackingField:
-    <MaxHP>k__BackingField: 1000
-    <ATK>k__BackingField: 30
+  stat: {fileID: 11400000, guid: 0d5bad1ed191a9f408dc10357ec5212b, type: 2}
   hurtBox: {fileID: 1253685683}
-  dashInvincibleDuration: 0.1
+  dashInvincibleDuration: 0.05
+  qteGaugeGainMult: 4
 --- !u!114 &99453587
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -429,41 +430,7 @@ MonoBehaviour:
   collider: {fileID: 99453589}
   afterImage: {fileID: 1495330237}
   combat: {fileID: 99453586}
-  maxMoveSpeed: 6.5
-  maxFallSpeed: -20
-  acceleration: 20
-  deceleration: 30
-  gravity: -9.81
-  groundStickGravity: -2
-  fallGravityMult: 4.25
-  lateAscentGravityMult: 5.25
-  jumpPower: 13
-  maxJumpCount: 2
-  maxJumpHoldTime: 0.15
-  airJumpPowerMult: 1
-  jumpStartMoveSpeedMult: 0.75
-  minJumpHoldGravityMult: 2.5
-  coyoteTimeLimit: 0.15
-  jumpBufferTimeLimit: 0.15
-  jumpHangThreshold: 0.5
-  jumpHangGravityMult: 0.5
-  jumpHangSpeedMult: 1.25
-  wallCollisionLayer:
-    serializedVersion: 2
-    m_Bits: 128
-  wallCheckDistance: 0.05
-  wallDetachInputTimeLimit: 0.5
-  wallClingGravityMult: 0.75
-  wallJumpMoveSpeedMult: 0.5
-  dashSpeed: 30
-  dashDuration: 0.15
-  dashCooldown: 0.5
-  dashEndSpeedMult: 0.75
-  skinWidth: 0.02
-  groundCheckDistance: 0.2
-  collisionLayer:
-    serializedVersion: 2
-    m_Bits: 192
+  settings: {fileID: 11400000, guid: 0af478fa8e67a0c4bbd19ed9e0437fb2, type: 2}
 --- !u!114 &99453588
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -569,6 +536,21 @@ Transform:
   - {fileID: 36322885}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &99453592
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 99453585}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4069f372873cc8649bf0ed45afad92c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Player
+  <Controller>k__BackingField: {fileID: 99453588}
+  <Movement>k__BackingField: {fileID: 99453587}
+  <Combat>k__BackingField: {fileID: 99453586}
 --- !u!1 &171261399
 GameObject:
   m_ObjectHideFlags: 0
@@ -614,10 +596,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e5781d1cd25cc24c82a2a28d0467099, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HitBox
-  <DamageMult>k__BackingField: 10
-  <HitLayerMask>k__BackingField:
+  damageMult: 0
+  hitLayerMask:
     serializedVersion: 2
-    m_Bits: 1024
+    m_Bits: 0
 --- !u!61 &171261402
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1413,9 +1395,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a077588c1173e0d41919c853873e7e6b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BossMinionSpawnerCombat
-  <Stat>k__BackingField:
-    <MaxHP>k__BackingField: 150
-    <ATK>k__BackingField: 0
+  stat: {fileID: 0}
   animator: {fileID: 0}
   hitEffect: {fileID: 425383020}
   hitReactionType: 1
@@ -2477,10 +2457,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e5781d1cd25cc24c82a2a28d0467099, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HitBox
-  <DamageMult>k__BackingField: 1
-  <HitLayerMask>k__BackingField:
+  damageMult: 0
+  hitLayerMask:
     serializedVersion: 2
-    m_Bits: 512
+    m_Bits: 0
 --- !u!61 &806559319
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2572,10 +2552,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e5781d1cd25cc24c82a2a28d0467099, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HitBox
-  <DamageMult>k__BackingField: 1.5
-  <HitLayerMask>k__BackingField:
+  damageMult: 0
+  hitLayerMask:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 0
 --- !u!61 &809348619
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2824,19 +2804,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerSwitchManager
   camera: {fileID: 1200373844}
-  currentPlayer:
-    Root: {fileID: 99453585}
-    Controller: {fileID: 99453588}
-    Move: {fileID: 99453587}
-    Combat: {fileID: 99453586}
+  currentPlayer: {fileID: 99453592}
   sparePlayers:
-  - Root: {fileID: 1199095848}
-    Controller: {fileID: 1199095853}
-    Move: {fileID: 1199095854}
-    Combat: {fileID: 1199095855}
+  - {fileID: 1199095856}
   switchJumpHeight: 3
   switchJumpDuration: 0.5
   screenOutDistance: 25
+  switchCooldown: 10
+  qteGaugeMax: 100
+  qteGaugeGainUnit: 5
 --- !u!4 &993587035 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7906726813409507520, guid: ff8c7f204082c754d903fa9f54aee7c7, type: 3}
@@ -3145,6 +3121,7 @@ GameObject:
   - component: {fileID: 1199095852}
   - component: {fileID: 1199095851}
   - component: {fileID: 1199095850}
+  - component: {fileID: 1199095856}
   - component: {fileID: 1199095853}
   - component: {fileID: 1199095854}
   - component: {fileID: 1199095855}
@@ -3276,41 +3253,7 @@ MonoBehaviour:
   collider: {fileID: 1199095850}
   afterImage: {fileID: 804958962}
   combat: {fileID: 1199095855}
-  maxMoveSpeed: 6.5
-  maxFallSpeed: -20
-  acceleration: 20
-  deceleration: 30
-  gravity: -9.81
-  groundStickGravity: -2
-  fallGravityMult: 4.25
-  lateAscentGravityMult: 5.25
-  jumpPower: 13
-  maxJumpCount: 2
-  maxJumpHoldTime: 0.15
-  airJumpPowerMult: 1
-  jumpStartMoveSpeedMult: 0.75
-  minJumpHoldGravityMult: 2.5
-  coyoteTimeLimit: 0.15
-  jumpBufferTimeLimit: 0.15
-  jumpHangThreshold: 0.5
-  jumpHangGravityMult: 0.5
-  jumpHangSpeedMult: 1.25
-  wallCollisionLayer:
-    serializedVersion: 2
-    m_Bits: 128
-  wallCheckDistance: 0.05
-  wallDetachInputTimeLimit: 0.5
-  wallClingGravityMult: 0.75
-  wallJumpMoveSpeedMult: 0.5
-  dashSpeed: 30
-  dashDuration: 0.15
-  dashCooldown: 0.5
-  dashEndSpeedMult: 0.75
-  skinWidth: 0.02
-  groundCheckDistance: 0.2
-  collisionLayer:
-    serializedVersion: 2
-    m_Bits: 192
+  settings: {fileID: 11400000, guid: 0af478fa8e67a0c4bbd19ed9e0437fb2, type: 2}
 --- !u!114 &1199095855
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3323,11 +3266,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac949e32dbe2943469d5eedfacaa74fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerCombat
-  <Stat>k__BackingField:
-    <MaxHP>k__BackingField: 1000
-    <ATK>k__BackingField: 50
+  stat: {fileID: 11400000, guid: 0d5bad1ed191a9f408dc10357ec5212b, type: 2}
   hurtBox: {fileID: 354365673}
   dashInvincibleDuration: 0.05
+  qteGaugeGainMult: 4
+--- !u!114 &1199095856
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1199095848}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4069f372873cc8649bf0ed45afad92c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Player
+  <Controller>k__BackingField: {fileID: 1199095853}
+  <Movement>k__BackingField: {fileID: 1199095854}
+  <Combat>k__BackingField: {fileID: 1199095855}
 --- !u!1 &1200373841
 GameObject:
   m_ObjectHideFlags: 0
@@ -4003,9 +3960,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ab4bc129fe2fc0459cc1dd39d9e1094, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BossCombat
-  <Stat>k__BackingField:
-    <MaxHP>k__BackingField: 999999999
-    <ATK>k__BackingField: 50
+  stat: {fileID: 11400000, guid: 8c6ede82fe1953041997f6e5768a48a1, type: 2}
   animator: {fileID: 0}
   hitEffect: {fileID: 1468794082}
   hitReactionType: 1
@@ -4130,10 +4085,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e5781d1cd25cc24c82a2a28d0467099, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HitBox
-  <DamageMult>k__BackingField: 1.5
-  <HitLayerMask>k__BackingField:
+  damageMult: 0
+  hitLayerMask:
     serializedVersion: 2
-    m_Bits: 512
+    m_Bits: 0
 --- !u!1 &1493300326
 GameObject:
   m_ObjectHideFlags: 0
@@ -4179,10 +4134,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e5781d1cd25cc24c82a2a28d0467099, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HitBox
-  <DamageMult>k__BackingField: 1.5
-  <HitLayerMask>k__BackingField:
+  damageMult: 0
+  hitLayerMask:
     serializedVersion: 2
-    m_Bits: 512
+    m_Bits: 0
 --- !u!61 &1493300329
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -4779,13 +4734,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1767027160}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8e5781d1cd25cc24c82a2a28d0467099, type: 3}
+  m_Script: {fileID: 11500000, guid: b4d9c2fd800bdfb46876686c6a5d63d5, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::HitBox
-  <DamageMult>k__BackingField: 1.25
-  <HitLayerMask>k__BackingField:
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerHitBox
+  damageMult: 1
+  hitLayerMask:
     serializedVersion: 2
     m_Bits: 512
+  qteGaugeGainMult: 1.25
 --- !u!1 &1780337675
 GameObject:
   m_ObjectHideFlags: 0
@@ -4907,13 +4863,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1795921831}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8e5781d1cd25cc24c82a2a28d0467099, type: 3}
+  m_Script: {fileID: 11500000, guid: b4d9c2fd800bdfb46876686c6a5d63d5, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::HitBox
-  <DamageMult>k__BackingField: 1.25
-  <HitLayerMask>k__BackingField:
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerHitBox
+  damageMult: 1.25
+  hitLayerMask:
     serializedVersion: 2
     m_Bits: 512
+  qteGaugeGainMult: 1.25
 --- !u!1001 &1833979512
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9255,13 +9212,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1856108896}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8e5781d1cd25cc24c82a2a28d0467099, type: 3}
+  m_Script: {fileID: 11500000, guid: b4d9c2fd800bdfb46876686c6a5d63d5, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::HitBox
-  <DamageMult>k__BackingField: 1
-  <HitLayerMask>k__BackingField:
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerHitBox
+  damageMult: 1
+  hitLayerMask:
     serializedVersion: 2
     m_Bits: 512
+  qteGaugeGainMult: 1
 --- !u!1 &1942444403
 GameObject:
   m_ObjectHideFlags: 0
@@ -9422,10 +9380,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e5781d1cd25cc24c82a2a28d0467099, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HitBox
-  <DamageMult>k__BackingField: 5
-  <HitLayerMask>k__BackingField:
+  damageMult: 0
+  hitLayerMask:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 0
 --- !u!61 &1958023848
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -9835,10 +9793,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e5781d1cd25cc24c82a2a28d0467099, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HitBox
-  <DamageMult>k__BackingField: 1.25
-  <HitLayerMask>k__BackingField:
+  damageMult: 0
+  hitLayerMask:
     serializedVersion: 2
-    m_Bits: 512
+    m_Bits: 0
 --- !u!61 &2108315901
 BoxCollider2D:
   m_ObjectHideFlags: 0

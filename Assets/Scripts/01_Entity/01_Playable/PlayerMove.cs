@@ -5,122 +5,56 @@ using DG.Tweening;
 
 public class PlayerMove : MonoBehaviour
 {
-    #region COMPONENT FIELDS
+    #region FIELDS
     [Title("Components")]
     [SerializeField] private Rigidbody2D body;
     [SerializeField] private new Collider2D collider;
     [SerializeField] private Afterimage afterImage;
     [SerializeField] private PlayerCombat combat;
-    #endregion
 
-    #region SETTING FIELDS
-    //Move Settings
-    [SerializeField, TitleGroup("Move")] private float maxMoveSpeed = 6.5f;
-    [SerializeField, TitleGroup("Move")] private float maxFallSpeed = -20f;
-    [SerializeField, TitleGroup("Move")] private float acceleration = 20f;
-    [SerializeField, TitleGroup("Move")] private float deceleration = 30f;
-
-    //Gravity Settings
-    [SerializeField, TitleGroup("Gravity")] private float gravity = -9.81f;
-    [SerializeField, TitleGroup("Gravity")] private float groundStickGravity = -2f;
-
-    [Space]
-    [SerializeField, TitleGroup("Gravity")] private float fallGravityMult = 4.25f;
-    [SerializeField, TitleGroup("Gravity")] private float lateAscentGravityMult = 5.25f;
-
-    //Jump Settings
-    [SerializeField, TitleGroup("Jump")] private float jumpPower = 13f;
-    [SerializeField, TitleGroup("Jump")] private int maxJumpCount = 2;
-
-    [Space]
-    [SerializeField, TitleGroup("Jump")] private float maxJumpHoldTime = 0.15f;
-
-    [Space]
-    [SerializeField, TitleGroup("Jump")] private float airJumpPowerMult = 1f;
-    [SerializeField, TitleGroup("Jump")] private float jumpStartMoveSpeedMult = 0.75f;
-    [SerializeField, TitleGroup("Jump")] private float minJumpHoldGravityMult = 2.5f;
-
-    //Extra Jump Settings
-    [SerializeField, TitleGroup("Extra Jump")] private float coyoteTimeLimit = 0.15f;
-    [SerializeField, TitleGroup("Extra Jump")] private float jumpBufferTimeLimit = 0.15f;
-
-    //Bonus Peak Settings
-    [SerializeField, TitleGroup("Bonus Peak")] private float jumpHangThreshold = 0.5f;
-    [SerializeField, TitleGroup("Bonus Peak")] private float jumpHangGravityMult = 0.5f;
-    [SerializeField, TitleGroup("Bonus Peak")] private float jumpHangSpeedMult = 1.25f;
-
-    //Wall Cling Settings
-    [SerializeField, TitleGroup("Wall Cling")] private LayerMask wallCollisionLayer;
-    [SerializeField, TitleGroup("Wall Cling")] private float wallCheckDistance = 0.05f;
-    [SerializeField, TitleGroup("Wall Cling")] private float wallDetachInputTimeLimit = 0.5f;
-
-    [Space]
-    [SerializeField, TitleGroup("Wall Cling")] private float wallClingGravityMult = 0.5f;
-    [SerializeField, TitleGroup("Wall Cling")] private float wallJumpMoveSpeedMult = 0.5f;
-
-    //Dash Settings
-    [SerializeField, TitleGroup("Dash")] private float dashSpeed = 20f;
-    [SerializeField, TitleGroup("Dash")] private float dashDuration = 0.15f;
-
-    [Space]
-    [SerializeField, TitleGroup("Dash")] private float dashCooldown = 0.5f;
-
-    [Space]
-    [SerializeField, TitleGroup("Dash")] private float dashEndSpeedMult = 0.75f; //대시 시 기존 속도 감소배율
-
-    //Collision Settings
-    [SerializeField, TitleGroup("Collision")] private float skinWidth = 0.02f;
-    [SerializeField, TitleGroup("Collision")] private float groundCheckDistance = 0.2f;
-    [SerializeField, TitleGroup("Collision")] private LayerMask collisionLayer;
-    #endregion
+    [Title("Settings")]
+    [SerializeField] private PlayerMoveSettings settings;
+    #endregion  
 
     #region RUNTIME STATE FIELDS
-    //Collision States
-    [PropertySpace]
-    [ShowInInspector, ReadOnly, TitleGroup("Collision")] public bool IsGrounded { get; private set; } = false;
+    [field: Title("Runtime State")]
+    [field: ShowInInspector, ReadOnly] public bool IsGrounded { get; private set; } = false;
 
-    //Move States
-    [Space]
-    [ShowInInspector, ReadOnly, TitleGroup("Move")] private Vector2 moveInput;
-    [ShowInInspector, ReadOnly, TitleGroup("Move")] public float MoveX { get; private set; } = 0f;
-    [ShowInInspector, ReadOnly, TitleGroup("Move")] public float MoveY { get; private set; } = 0f;
-    [ShowInInspector, ReadOnly, TitleGroup("Move")] public float LastMoveDirection { get; private set; } = 1f;
+    [Space] //Move States
+    [ShowInInspector, ReadOnly] private Vector2 moveInput;
+    [field: ShowInInspector, ReadOnly] public float MoveX { get; private set; } = 0f;
+    [field: ShowInInspector, ReadOnly] public float MoveY { get; private set; } = 0f;
+    [field: ShowInInspector, ReadOnly] public float LastMoveDirection { get; private set; } = 1f;
 
-    //Jump States
-    [Space]
-    [ShowInInspector, ReadOnly, TitleGroup("Jump")] private bool isJumpRequested = false;
+    [Space] //Jump States
+    [ShowInInspector, ReadOnly] private bool isJumpRequested = false;
+    [ShowInInspector, ReadOnly] private bool isJumping = false;
+    [ShowInInspector, ReadOnly] private int jumpCount = 0;
+    [ShowInInspector, ReadOnly] private bool isJumpHold = false;
+    [ShowInInspector, ReadOnly] private float jumpHoldTime = 0f;
+    [ShowInInspector, ReadOnly] private float coyoteTime = float.PositiveInfinity;
+    [ShowInInspector, ReadOnly] private float jumpBufferTime = float.PositiveInfinity;
 
-    [ShowInInspector, ReadOnly, TitleGroup("Jump")] private bool isJumping = false;
-    [ShowInInspector, ReadOnly, TitleGroup("Jump")] private int jumpCount = 0;
+    [field: PropertySpace] //Wall Cling States
+    [field: ShowInInspector, ReadOnly] public bool IsClingToWall { get; private set; } = false;
+    [ShowInInspector, ReadOnly] private float wallDetachInputTime = 0f;
 
-    [ShowInInspector, ReadOnly, TitleGroup("Jump")] private bool isJumpHold = false;
-    [ShowInInspector, ReadOnly, TitleGroup("Jump")] private float jumpHoldTime = 0f;
+    [Space] //Dash States
+    [ShowInInspector, ReadOnly] private bool isDashRequested = false;
+    [ShowInInspector, ReadOnly] private bool isDashOnCooldown = false;
+    [ShowInInspector, ReadOnly] private float dashCooldownTime = 0f;
 
-    [Space]
-    [ShowInInspector, ReadOnly, TitleGroup("Extra Jump")] private float coyoteTime = float.PositiveInfinity;
-    [ShowInInspector, ReadOnly, TitleGroup("Extra Jump")] private float jumpBufferTime = float.PositiveInfinity;
+    [Space] //Dashing States
+    [ShowInInspector, ReadOnly] private bool isDashing = false;
+    [ShowInInspector, ReadOnly] private float dashTime = 0f;
+    [ShowInInspector, ReadOnly] private float dashStartX = 0f;
+    [ShowInInspector, ReadOnly] private float dashEndX = 0f;
+    [ShowInInspector, ReadOnly] private float dashPreviousX = 0f;
 
-    //Wall Cling States
-    [ShowInInspector, ReadOnly, TitleGroup("Wall Cling")] public bool IsClingToWall { get; private set; } = false;
-    [ShowInInspector, ReadOnly, TitleGroup("Wall Cling")] private float wallDetachInputTime = 0f;
+    [Space] //Switch States
+    [ShowInInspector, ReadOnly] private bool isSwitching = false;
 
-    //Bonus Peak States
-    [PropertySpace]
-    [ShowInInspector, ReadOnly, TitleGroup("Bonus Peak")] private bool IsBonusPeakSection => Mathf.Abs(MoveY) < jumpHangThreshold;
-
-    //Dash States
-    [Space]
-    [ShowInInspector, ReadOnly, TitleGroup("Dash")] private bool isDashRequested = false;
-    [ShowInInspector, ReadOnly, TitleGroup("Dash")] private bool isDashOnCooldown = false;
-    [ShowInInspector, ReadOnly, TitleGroup("Dash")] private float dashCooldownTime = 0f;
-
-    [ShowInInspector, ReadOnly, TitleGroup("Dash")] private bool isDashing = false;
-    [ShowInInspector, ReadOnly, TitleGroup("Dash")] private float dashTime = 0f;
-    [ShowInInspector, ReadOnly, TitleGroup("Dash")] private float dashStartX = 0f;
-    [ShowInInspector, ReadOnly, TitleGroup("Dash")] private float dashEndX = 0f;
-    [ShowInInspector, ReadOnly, TitleGroup("Dash")] private float dashPreviousX = 0f;
-
-    [ShowInInspector, ReadOnly, TitleGroup("Switch")] private bool isSwitching = false;
+    private bool IsBonusPeakSection => Mathf.Abs(MoveY) < settings.JumpHangThreshold;
     #endregion
 
     #region UNITY METHOD
@@ -174,7 +108,7 @@ public class PlayerMove : MonoBehaviour
 
         jumpBufferTime += Time.deltaTime;
 
-        if (jumpBufferTime >= jumpBufferTimeLimit)
+        if (jumpBufferTime >= settings.JumpBufferTimeLimit)
         {
             isJumpRequested = false;
             jumpBufferTime = float.PositiveInfinity;
@@ -196,10 +130,10 @@ public class PlayerMove : MonoBehaviour
 
         jumpHoldTime += Time.deltaTime;
 
-        if (jumpHoldTime >= maxJumpHoldTime)
+        if (jumpHoldTime >= settings.MaxJumpHoldTime)
         {
             isJumpHold = false;
-            jumpHoldTime = maxJumpHoldTime;
+            jumpHoldTime = settings.MaxJumpHoldTime;
         }
     }
 
@@ -211,7 +145,7 @@ public class PlayerMove : MonoBehaviour
 
         dashCooldownTime += Time.deltaTime;
 
-        if (dashCooldownTime >= dashCooldown)
+        if (dashCooldownTime >= settings.DashCooldown)
         {
             dashCooldownTime = 0f;
             isDashOnCooldown = false;
@@ -233,7 +167,7 @@ public class PlayerMove : MonoBehaviour
 
         wallDetachInputTime += Time.deltaTime;
 
-        if (wallDetachInputTime >= wallDetachInputTimeLimit)
+        if (wallDetachInputTime >= settings.WallDetachInputTimeLimit)
             IsClingToWall = false;
     }
     #endregion
@@ -259,20 +193,20 @@ public class PlayerMove : MonoBehaviour
             dashCooldownTime = 0f;
     }
 
-    private void ResetState()
+    public void ResetState()
     {
         moveInput = Vector2.zero;
-        MoveX = 0f;
-        MoveY = 0f;
 
         isJumpRequested = false;
-        jumpBufferTime = float.PositiveInfinity;
 
         isJumping = false;
         jumpCount = 0;
 
         isJumpHold = false;
         jumpHoldTime = 0f;
+
+        jumpBufferTime = float.PositiveInfinity;
+        coyoteTime = float.PositiveInfinity;
 
         IsClingToWall = false;
         wallDetachInputTime = 0f;
@@ -329,12 +263,12 @@ public class PlayerMove : MonoBehaviour
         Vector3 dir = move > 0f ? axis : -axis;
         float dist = Mathf.Abs(move);
 
-        RaycastHit2D hit = Physics2D.BoxCast(box.center, box.size, 0f, dir, dist, collisionLayer);
+        RaycastHit2D hit = Physics2D.BoxCast(box.center, box.size, 0f, dir, dist, settings.GroundLayerMask);
 
         if (hit.collider == null) return move;
 
         canMoveAsDesired = false;
-        float resolvedMove = Mathf.Max(0f, hit.distance - skinWidth);
+        float resolvedMove = Mathf.Max(0f, hit.distance - settings.SkinWidth);
 
         return Mathf.Sign(move) * resolvedMove;
     }
@@ -348,7 +282,7 @@ public class PlayerMove : MonoBehaviour
 
         float targetSpeed;
 
-        float speedChangeRate = isMoving ? acceleration : deceleration;
+        float speedChangeRate = isMoving ? settings.Acceleration : settings.Deceleration;
         float maxDelta = speedChangeRate * Time.fixedDeltaTime;
 
         if (isMoving == false) targetSpeed = 0f;
@@ -356,13 +290,13 @@ public class PlayerMove : MonoBehaviour
         {
             LastMoveDirection = dir;
 
-            targetSpeed = maxMoveSpeed * dir;
+            targetSpeed = settings.MaxMoveSpeed * dir;
 
             bool isTurnDir = MoveX != 0f && Mathf.Sign(MoveX) != dir;
             if (IsGrounded && isTurnDir) MoveX = 0f;
 
             if (isJumping && IsBonusPeakSection)
-                targetSpeed *= jumpHangSpeedMult;
+                targetSpeed *= settings.JumpHangSpeedMult;
         }
 
         MoveX = Mathf.MoveTowards(MoveX, targetSpeed, maxDelta);
@@ -374,20 +308,20 @@ public class PlayerMove : MonoBehaviour
     {
         if (IsGrounded && MoveY <= 0f)
         {
-            MoveY = groundStickGravity;
+            MoveY = settings.GroundStickGravity;
             return;
         }
 
-        float gravity = this.gravity * gravityMult;
+        float gravity = settings.Gravity * gravityMult;
 
         MoveY += gravity * Time.fixedDeltaTime;
-        MoveY = Mathf.Max(MoveY, maxFallSpeed);
+        MoveY = Mathf.Max(MoveY, settings.MaxFallSpeed);
     }
 
     private float GetGravityMultiplier()
     {
         if (isJumping == false)
-            return MoveY > 0f ? 1f : fallGravityMult;
+            return MoveY > 0f ? 1f : settings.FallGravityMult;
 
         float mult;
 
@@ -396,18 +330,18 @@ public class PlayerMove : MonoBehaviour
         {
             if (MoveY > 0f)
             {
-                float holdTime = Mathf.Min(jumpHoldTime, maxJumpHoldTime);
+                float holdTime = Mathf.Min(jumpHoldTime, settings.MaxJumpHoldTime);
 
-                float t = Mathf.InverseLerp(0f, maxJumpHoldTime, holdTime);
-                float gravityMult = Mathf.Lerp(minJumpHoldGravityMult, 1f, t);
+                float t = Mathf.InverseLerp(0f, settings.MaxJumpHoldTime, holdTime);
+                float gravityMult = Mathf.Lerp(settings.MinJumpHoldGravityMult, 1f, t);
 
-                mult = lateAscentGravityMult * gravityMult;
+                mult = settings.LastAscentGravityMult * gravityMult;
             }
-            else mult = fallGravityMult;
+            else mult = settings.FallGravityMult;
         }
 
         if (IsBonusPeakSection)
-            mult *= jumpHangGravityMult;
+            mult *= settings.JumpHangGravityMult;
 
         return mult;
     }
@@ -421,11 +355,11 @@ public class PlayerMove : MonoBehaviour
         coyoteTime = float.PositiveInfinity;
         if (jumpCount == 0)
         {
-            dashCooldownTime = dashCooldown;
+            dashCooldownTime = settings.DashCooldown;
             isDashOnCooldown = false;
         }
 
-        float moveSpeed = MoveX * jumpStartMoveSpeedMult;
+        float moveSpeed = MoveX * settings.JumpStartMoveSpeedMult;
         PerformJump(moveSpeed, true);
     }
 
@@ -436,8 +370,8 @@ public class PlayerMove : MonoBehaviour
         float dir = LastMoveDirection * -1f;
         float input = moveInput.x;
 
-        float moveSpeedMult = input == dir ? jumpStartMoveSpeedMult : wallJumpMoveSpeedMult;
-        float moveSpeed = maxMoveSpeed * moveSpeedMult * dir;
+        float moveSpeedMult = input == dir ? settings.JumpStartMoveSpeedMult : settings.WallJumpMoveSpeedMult;
+        float moveSpeed = settings.MaxMoveSpeed * moveSpeedMult * dir;
 
         PerformJump(moveSpeed, false);
     }
@@ -450,10 +384,10 @@ public class PlayerMove : MonoBehaviour
         isJumpHold = canHoldJump && jumpCount == 0;
 
         if (isJumpHold == false)
-            jumpHoldTime = maxJumpHoldTime;
+            jumpHoldTime = settings.MaxJumpHoldTime;
 
-        float power = jumpPower;
-        float powerMult = jumpCount == 0 ? 1f : airJumpPowerMult;
+        float power = settings.JumpPower;
+        float powerMult = jumpCount == 0 ? 1f : settings.JumpPowerMultInAir;
 
         power *= powerMult;
 
@@ -467,10 +401,10 @@ public class PlayerMove : MonoBehaviour
     {
         if (isJumpRequested == false) return false;
         if (IsGrounded) return true;
-        if (coyoteTime <= coyoteTimeLimit) return true;
+        if (coyoteTime <= settings.CoyoteTimeLimit) return true;
         if (isJumping == false) return false;
 
-        return jumpCount < maxJumpCount;
+        return jumpCount < settings.MaxJumpCount;
     }
     #endregion
 
@@ -490,7 +424,7 @@ public class PlayerMove : MonoBehaviour
 
         jumpCount = 0;
 
-        dashCooldownTime = dashCooldown;
+        dashCooldownTime = settings.DashCooldown;
         isDashOnCooldown = false;
 
         IsClingToWall = true;
@@ -520,7 +454,7 @@ public class PlayerMove : MonoBehaviour
             moveAxis != Vector2.zero;
 
         if (shouldIgnoreGravity) MoveY = 0f;
-        else ApplyGravity(wallClingGravityMult);
+        else ApplyGravity(settings.WallClingGravityMult);
     }
 
     private bool CheckWallClingSurface()
@@ -536,8 +470,8 @@ public class PlayerMove : MonoBehaviour
         RaycastHit2D hit = Physics2D.Raycast(
             origin,
             dir,
-            wallCheckDistance,
-            wallCollisionLayer
+            settings.WallCheckDistance,
+            settings.WallClingLayerMask
         );
 
         return hit.collider != null;
@@ -557,7 +491,7 @@ public class PlayerMove : MonoBehaviour
         float dir = moveInput.x;
         LastMoveDirection = dir != 0f ? dir : LastMoveDirection;
 
-        float distance = dashSpeed * dashDuration;
+        float distance = settings.DashSpeed * settings.DashDuration;
         float delta = distance * LastMoveDirection;
 
         dashStartX = body.position.x;
@@ -573,7 +507,7 @@ public class PlayerMove : MonoBehaviour
     {
         dashTime += Time.fixedDeltaTime;
 
-        float progress = Mathf.Clamp01(dashTime / dashDuration);
+        float progress = Mathf.Clamp01(dashTime / settings.DashDuration);
 
         float easedMove = EasingFunction.EaseInOutQuart(dashStartX, dashEndX, progress);
         float desiredMove = easedMove - dashPreviousX;
@@ -590,7 +524,7 @@ public class PlayerMove : MonoBehaviour
 
             //대쉬한 방향으로 속도값 조정
             MoveX = Mathf.Abs(MoveX) *
-                dashEndSpeedMult *
+                settings.DashEndSpeedMult *
                 LastMoveDirection;
 
             afterImage.Stop();
@@ -604,9 +538,6 @@ public class PlayerMove : MonoBehaviour
     {
         isSwitching = true;
 
-        ResetState();
-        coyoteTime = 0f;
-
         body.position = start;
 
         yield return body
@@ -616,6 +547,14 @@ public class PlayerMove : MonoBehaviour
 
         isSwitching = false;
     }
+
+    public void SyncPrevPlayerState(PlayerMoveSyncData syncData)
+    {
+        MoveX = syncData.MoveX;
+        LastMoveDirection = syncData.LastMoveDirection;
+
+        isJumping = true;
+    }
     #endregion
 
     #region COLLISION METHOD
@@ -624,8 +563,8 @@ public class PlayerMove : MonoBehaviour
         Bounds box = GetCastBox();
 
         RaycastHit2D hit = Physics2D.BoxCast(box.center, box.size, 0f,
-            Vector2.down, groundCheckDistance,
-            collisionLayer);
+            Vector2.down, settings.GroundCheckDistance,
+            settings.GroundLayerMask);
 
         return hit.collider != null;
     }
@@ -635,8 +574,8 @@ public class PlayerMove : MonoBehaviour
         Bounds box = collider.bounds;
 
         Vector3 size = box.size;
-        size.x -= skinWidth * 2;
-        size.y -= skinWidth * 2;
+        size.x -= settings.SkinWidth * 2;
+        size.y -= settings.SkinWidth * 2;
         box.size = size;
 
         return box;

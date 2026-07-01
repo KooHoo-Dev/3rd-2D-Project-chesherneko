@@ -136,8 +136,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e5781d1cd25cc24c82a2a28d0467099, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HitBox
-  <DamageMult>k__BackingField: 1
-  <HitLayerMask>k__BackingField:
+  damageMult: 1
+  hitLayerMask:
     serializedVersion: 2
     m_Bits: 256
 --- !u!61 &953162480601053600
@@ -361,6 +361,7 @@ MonoBehaviour:
     m_Bits: 192
   attackRange: 2.25
   enhancedAttackChance: 2
+  <CanRespawn>k__BackingField: 1
   <RespawnDelay>k__BackingField: 10
 --- !u!114 &4773151710605093694
 MonoBehaviour:
@@ -374,9 +375,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aeeffd4262638d741b53e611b0789a37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyCombat
-  <Stat>k__BackingField:
-    <MaxHP>k__BackingField: 250
-    <ATK>k__BackingField: 25
+  stat: {fileID: 11400000, guid: 37d17a654a22f1d4ab2a75b7a704c6cc, type: 2}
   animator: {fileID: 1000582362238862099}
   hitEffect: {fileID: 1331139638749657716}
   hitReactionType: 1

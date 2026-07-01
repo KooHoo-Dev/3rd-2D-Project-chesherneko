@@ -177,6 +177,7 @@ MonoBehaviour:
     m_Bits: 192
   attackRange: 5
   enhancedAttackChance: 3
+  <CanRespawn>k__BackingField: 1
   <RespawnDelay>k__BackingField: 10
   normalShooter: {fileID: 7980028467329254096}
   enhancedShooter: {fileID: 7790619643635357433}
@@ -192,9 +193,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aeeffd4262638d741b53e611b0789a37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyCombat
-  <Stat>k__BackingField:
-    <MaxHP>k__BackingField: 50
-    <ATK>k__BackingField: 50
+  stat: {fileID: 11400000, guid: 497c41bfa6347e44c98edf2dfb8a9c1d, type: 2}
   animator: {fileID: 8089810542471885810}
   hitEffect: {fileID: 0}
   hitReactionType: 0

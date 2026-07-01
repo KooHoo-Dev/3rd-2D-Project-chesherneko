@@ -6,9 +6,8 @@ public class HitBox : MonoBehaviour
 {
     private CombatEntity owner;
 
-    [field: TitleGroup("Settings")]
-    [field: SerializeField] public float DamageMult { get; private set; }
-    [field: SerializeField] private LayerMask HitLayerMask { get; set; }
+    [SerializeField, TitleGroup("Settings")] protected float damageMult;
+    [SerializeField, TitleGroup("Settings")] protected LayerMask hitLayerMask;
 
     private readonly HashSet<Collider2D> checkList = new();
 
@@ -31,7 +30,7 @@ public class HitBox : MonoBehaviour
 
     protected virtual bool TryHit(Collider2D collision)
     {
-        if (HitLayerMask.Contains(collision) == false) return false;
+        if (hitLayerMask.Contains(collision) == false) return false;
         if (checkList.Contains(collision)) return false;
 
         if (CombatManager.Instance
@@ -42,7 +41,7 @@ public class HitBox : MonoBehaviour
         CombatEntity sender = owner;
         CombatEntity receiver = hurtBox.Owner;
 
-        int damage = Mathf.FloorToInt(sender.Stat.GetFinalATK() * DamageMult);
+        int damage = Mathf.FloorToInt(sender.ATK * damageMult);
 
         CombatEvent @event;
         @event.EventType = CombatEventType.Damage;
