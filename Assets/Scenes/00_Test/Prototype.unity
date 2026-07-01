@@ -388,7 +388,7 @@ GameObject:
   - component: {fileID: 99453590}
   - component: {fileID: 99453589}
   - component: {fileID: 99453592}
-  - component: {fileID: 99453588}
+  - component: {fileID: 99453593}
   - component: {fileID: 99453587}
   - component: {fileID: 99453586}
   m_Layer: 0
@@ -431,21 +431,6 @@ MonoBehaviour:
   collider: {fileID: 99453589}
   afterImage: {fileID: 1495330237}
   settings: {fileID: 11400000, guid: 0af478fa8e67a0c4bbd19ed9e0437fb2, type: 2}
---- !u!114 &99453588
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 99453585}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a537e45ed01c7974ba2831ad59667475, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerController
-  <Animator>k__BackingField: {fileID: 1970520614}
-  owner: {fileID: 99453592}
-  fallTransitionThreshold: -1
 --- !u!61 &99453589
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -549,9 +534,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Player
   <RootTrans>k__BackingField: {fileID: 1970520615}
-  <Controller>k__BackingField: {fileID: 99453588}
+  <Controller>k__BackingField: {fileID: 99453593}
   <Movement>k__BackingField: {fileID: 99453587}
   <Combat>k__BackingField: {fileID: 99453586}
+--- !u!114 &99453593
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 99453585}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8fe100c4e81dcb4da4a980b9ef3affd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ReaperController
+  <Animator>k__BackingField: {fileID: 1970520614}
+  owner: {fileID: 99453592}
+  fallTransitionThreshold: -1
 --- !u!1 &171261399
 GameObject:
   m_ObjectHideFlags: 0
@@ -3123,7 +3123,7 @@ GameObject:
   - component: {fileID: 1199095851}
   - component: {fileID: 1199095850}
   - component: {fileID: 1199095856}
-  - component: {fileID: 1199095853}
+  - component: {fileID: 1199095857}
   - component: {fileID: 1199095854}
   - component: {fileID: 1199095855}
   m_Layer: 0
@@ -3223,21 +3223,6 @@ Transform:
   - {fileID: 537931265}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1199095853
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1199095848}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a537e45ed01c7974ba2831ad59667475, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerController
-  <Animator>k__BackingField: {fileID: 199699750}
-  owner: {fileID: 1199095856}
-  fallTransitionThreshold: -1
 --- !u!114 &1199095854
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3284,9 +3269,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Player
   <RootTrans>k__BackingField: {fileID: 199699752}
-  <Controller>k__BackingField: {fileID: 1199095853}
+  <Controller>k__BackingField: {fileID: 1199095857}
   <Movement>k__BackingField: {fileID: 1199095854}
   <Combat>k__BackingField: {fileID: 1199095855}
+--- !u!114 &1199095857
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1199095848}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c09891106a086847b24b13ff019355e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MooniController
+  <Animator>k__BackingField: {fileID: 199699750}
+  owner: {fileID: 1199095856}
+  fallTransitionThreshold: -1
 --- !u!1 &1200373841
 GameObject:
   m_ObjectHideFlags: 0

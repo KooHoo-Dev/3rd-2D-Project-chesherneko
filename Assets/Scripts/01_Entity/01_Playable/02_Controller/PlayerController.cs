@@ -10,7 +10,7 @@ public enum AirborneState
     Falling
 }
 
-public class PlayerController : AnimationStateController
+public abstract class PlayerController : AnimationStateController
 {
     #region FIELDS
     [TitleGroup("Components")]
@@ -39,6 +39,8 @@ public class PlayerController : AnimationStateController
     #endregion
 
     #region ABSTRACT METHOD
+    protected abstract PlayerAnimationStateBase CreateSkillState();
+
     protected override void InitStateMap()
     {
         stateMap = new()
@@ -49,7 +51,7 @@ public class PlayerController : AnimationStateController
             { Animator.StringToHash(AnimationTag.ANIM_TAG_WALL_CLING), new PlayerWallClingState(this) },
             { Animator.StringToHash(AnimationTag.ANIM_TAG_ATTACK), new PlayerAttackState(this) },
             { Animator.StringToHash(AnimationTag.ANIM_TAG_ATTACK_END), new PlayerAttackEndState(this) },
-            { Animator.StringToHash(AnimationTag.ANIM_TAG_SKILL), new PlayerSkillState(this) },
+            { Animator.StringToHash(AnimationTag.ANIM_TAG_SKILL), CreateSkillState() },
         };
     }
 
@@ -208,14 +210,6 @@ public class PlayerController : AnimationStateController
         return isBusy;
     }
 
-    public bool IsCurrentAnimationFinished()
-    {
-        AnimatorStateInfo stateInfo = Animator.GetCurrentAnimatorStateInfo(0);
-
-        if (Animator.IsInTransition(0))
-            return false;
-
-        return stateInfo.normalizedTime >= 1f;
-    }
+    public bool IsCurrentAnimationFinished() => Animator.IsCurrentAnimationFinished();
     #endregion
 }

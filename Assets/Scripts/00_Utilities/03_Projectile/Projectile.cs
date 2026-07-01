@@ -12,7 +12,6 @@ public class Projectile : HitBox
 
     [Space]
     [SerializeField] private float checkRadius = 0.125f;
-    [SerializeField] private float checkDistance = 0.05f;
     [SerializeField] private Vector3 checkOffset;
 
     [Title("Runtime State")]

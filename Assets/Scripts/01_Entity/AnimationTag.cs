@@ -16,6 +16,7 @@ public class AnimationTag
     public const string ANIM_TAG_ATTACK = "Attack";
     public const string ANIM_TAG_ATTACK_END = "AttackEnd";
     public const string ANIM_TAG_SKILL = "Skill";
+    public const string ANIM_TAG_SKILL_END = "SkillEnd";
 
     public const string ANIM_TAG_HIT = "Hit";
     public const string ANIM_TAG_DEAD = "Dead";

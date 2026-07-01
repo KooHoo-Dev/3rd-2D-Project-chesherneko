@@ -1,7 +1,5 @@
-using DG.Tweening;
-using Sirenix.OdinInspector;
-using Unity.VisualScripting;
 using UnityEngine;
+using Sirenix.OdinInspector;
 
 public struct PlayerMoveSyncData
 {
@@ -79,5 +77,8 @@ public class Player : MonoBehaviour
 
     public void EnableInvincibility() => Combat.SetHurtBoxActive(false);
     public void DisableInvincibility() => Combat.SetHurtBoxActive(true);
+
+    public bool IsBusyForSwitch() => Controller.IsBusyForSwitch();
+    public bool IsCurrentAnimationFinished() => Controller.IsCurrentAnimationFinished();
     #endregion
 }

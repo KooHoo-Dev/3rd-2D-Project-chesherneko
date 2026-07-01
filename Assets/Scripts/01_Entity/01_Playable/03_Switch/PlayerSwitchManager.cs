@@ -158,8 +158,8 @@ public class PlayerSwitchManager : MonoSingleton<PlayerSwitchManager>
 
         while (true)
         {
-            if (player.Controller.IsBusyForSwitch() == false) break;
-            if (player.Controller.IsCurrentAnimationFinished()) break;
+            if (player.IsBusyForSwitch() == false) break;
+            if (player.IsCurrentAnimationFinished()) break;
 
             yield return null;
         }
