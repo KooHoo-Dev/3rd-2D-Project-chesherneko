@@ -42,6 +42,9 @@ public class PlayerSwitchManager : MonoSingleton<PlayerSwitchManager>
     #region UNITY METHODS
     private void Update()
     {
+        if (Key.F5.WasPressed())
+            qteGauge = qteGaugeMax;
+
         if (isSwitching) return;
 
         if (isSwitchOnCooldown)
@@ -60,7 +63,8 @@ public class PlayerSwitchManager : MonoSingleton<PlayerSwitchManager>
     {
         switchCooldownTime += Time.deltaTime;
 
-        if (switchCooldownTime > switchCooldown)
+        if (qteGauge >= qteGaugeMax ||
+            switchCooldownTime > switchCooldown)
         {
             isSwitchOnCooldown = false;
             switchCooldownTime = 0f;
@@ -69,6 +73,9 @@ public class PlayerSwitchManager : MonoSingleton<PlayerSwitchManager>
 
     private IEnumerator SwitchCoroutine(int nextIdx)
     {
+        bool canUseQTE = qteGauge >= qteGaugeMax;
+        qteGauge = 0f;
+
         isSwitching = true;
         isSwitchOnCooldown = true;
 
@@ -87,7 +94,7 @@ public class PlayerSwitchManager : MonoSingleton<PlayerSwitchManager>
 
         camera.Follow = null;
 
-        next.Transform.localScale = currTrans.localScale;
+        next.transform.localScale = currTrans.localScale;
         next.gameObject.SetActive(true);
         next.LockControl();
         next.EnableInvincibility();
@@ -96,7 +103,7 @@ public class PlayerSwitchManager : MonoSingleton<PlayerSwitchManager>
         bool switchInDone = false;
 
         StartCoroutine(SwitchOutCoroutine(curr, switchPoint, goalPoint, () => switchOutDone = true));
-        StartCoroutine(SwitchInCoroutine(curr, next, goalPoint, switchPoint, () => switchInDone = true));
+        StartCoroutine(SwitchInCoroutine(curr, next, goalPoint, switchPoint, () => switchInDone = true, canUseQTE));
 
         yield return new WaitUntil(() => switchOutDone && switchInDone);
 
@@ -113,9 +120,9 @@ public class PlayerSwitchManager : MonoSingleton<PlayerSwitchManager>
 
         yield return WaitUntilSwitchOutReady(curr);
 
-        curr.Transform.position = start;
+        curr.transform.position = start;
 
-        yield return curr.Transform.DOJump(
+        yield return curr.transform.DOJump(
             end, 
             switchJumpHeight, 
             1, 
@@ -128,11 +135,11 @@ public class PlayerSwitchManager : MonoSingleton<PlayerSwitchManager>
     }
 
     private IEnumerator SwitchInCoroutine(Player curr, Player next,
-        Vector2 start, Vector2 end, Action onDone)
+        Vector2 start, Vector2 end, Action onDone, bool canUseQTE)
     {
         next.Movement.ResetState();
 
-        next.Transform.position = end;
+        next.transform.position = end;
         next.RootTrans.position = start;
 
         Player.SwitchLocalPlayer(curr, next);
@@ -150,6 +157,8 @@ public class PlayerSwitchManager : MonoSingleton<PlayerSwitchManager>
 
         next.UnlockControl();
         next.DisableInvincibility();
+
+        if (canUseQTE) next.UseQTE();
     }
 
     private IEnumerator WaitUntilSwitchOutReady(Player player)

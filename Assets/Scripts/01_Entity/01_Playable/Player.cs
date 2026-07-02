@@ -15,7 +15,7 @@ public struct PlayerCombatSyncData
 public class Player : MonoBehaviour
 {
     #region FIELDS
-    public static Player LocalPlayer { get; private set; }
+    public static Player Local { get; private set; }
 
     [field: Title("Components")]
     [field: SerializeField] public Transform RootTrans { get; private set; }
@@ -25,28 +25,26 @@ public class Player : MonoBehaviour
 
     [Title("Runtime States")]
     [ShowInInspector] public bool IsLockControl { get; private set; } = false;
-
-    public Transform Transform => gameObject.transform;
     #endregion
 
     #region UNITY METHODS
     private void Awake()
     {
-        if (LocalPlayer == null)
-            LocalPlayer = this;
+        if (Local == null)
+            Local = this;
     }
     #endregion
 
     #region STATIC METHODS
     public static void SwitchLocalPlayer(Player curr, Player next)
     {
-        if (LocalPlayer != null)
+        if (Local != null)
         {
             SyncMovementState(curr, next);
             SyncCombatState(curr, next);
         }
 
-        LocalPlayer = next;
+        Local = next;
     }
 
     private static void SyncMovementState(Player curr, Player next)
@@ -80,5 +78,6 @@ public class Player : MonoBehaviour
 
     public bool IsBusyForSwitch() => Controller.IsBusyForSwitch();
     public bool IsCurrentAnimationFinished() => Controller.IsCurrentAnimationFinished();
+    public void UseQTE() => Controller.UseQTE();
     #endregion
 }

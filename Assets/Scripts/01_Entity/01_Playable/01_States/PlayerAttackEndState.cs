@@ -16,6 +16,7 @@ public class PlayerAttackEndState : PlayerAnimationStateBase
     {
         Owner.HandleAirMoveInput();
         Owner.HandleDashInput();
+        Owner.HandleSkillInput();
     }
 
     public override void OnExit()

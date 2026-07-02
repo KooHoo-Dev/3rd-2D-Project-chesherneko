@@ -20,16 +20,17 @@ public class MooniSkillState : PlayerAnimationStateBase
         if (isApplied == false && stateInfo.normalizedTime >= SKILL_APPLY_TIME)
         {
             isApplied = true;
-            //Apply Heal
+            Owner.Combat.TakeHealByMaxHPRatio(0.3f);
         }
 
-        if (stateInfo.normalizedTime < 1f) return;
+        if (stateInfo.normalizedTime < 0.75f) return;
 
-        Animator.SetBool(AnimationParam.IS_USE_SKILL, false);
+        Animator.SetBool(AnimationParam.IS_USING_SKILL, false);
     }
 
     public override void OnExit()
     {
         isApplied = false;
+        Animator.SetBool(AnimationParam.IS_USING_SKILL, false);
     }
 }

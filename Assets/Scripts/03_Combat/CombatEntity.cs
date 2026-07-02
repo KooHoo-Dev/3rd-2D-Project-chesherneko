@@ -59,6 +59,8 @@ public abstract class CombatEntity : MonoBehaviour
     {
         int healedHP = currentHP + healAmount;
         currentHP = Mathf.Min(healedHP, stat.MaxHP);
+
+        Debug.Log($"{name}의 체력 {healAmount}만큼 회복!");
     }
     #endregion
 }

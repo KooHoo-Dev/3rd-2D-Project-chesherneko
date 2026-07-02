@@ -31,7 +31,7 @@ public class BossEye : MonoBehaviour
 
     private IEnumerator ExecuteLogicCoroutine()
     {
-        Transform target = PlayerCombat.LocalPlayer.transform;
+        Transform target = Player.Local.transform;
         pupil.RequestFollowTarget(target);
 
         yield return FadeCoroutine(true, fadeInDuration);

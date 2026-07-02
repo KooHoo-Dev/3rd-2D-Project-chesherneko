@@ -15,6 +15,7 @@ public class PlayerAttackState : PlayerAnimationStateBase
     {
         Owner.HandleAirMoveInput();
         Owner.HandleDashInput();
+        Owner.HandleSkillInput();
 
         //직전 공격 입력을 제거
         if (stateInfo.normalizedTime < INPUT_RESET_TIME)

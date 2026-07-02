@@ -18,8 +18,13 @@ public class AnimationParam
 
     public static readonly int IS_ATTACK = Animator.StringToHash("IsAttack");
     public static readonly int IS_ATTACKING = Animator.StringToHash("IsAttacking");
-    public static readonly int IS_USE_SKILL = Animator.StringToHash("IsUseSkill");
+    
+    public static readonly int SKILL = Animator.StringToHash("Skill");
     public static readonly int SKILL_END = Animator.StringToHash("SkillEnd");
+    public static readonly int IS_USING_SKILL = Animator.StringToHash("IsUsingSkill");
+
+    public static readonly int QTE = Animator.StringToHash("QTE");
+    public static readonly int IS_USING_QTE = Animator.StringToHash("IsUsingQTE");
 
     public static readonly int ATTACK_1 = Animator.StringToHash("Attack1");
     public static readonly int ATTACK_2 = Animator.StringToHash("Attack2");

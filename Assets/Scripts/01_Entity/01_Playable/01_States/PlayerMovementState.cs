@@ -10,5 +10,6 @@ public class PlayerMovementState : PlayerAnimationStateBase
         Owner.HandleJumpInput();
         Owner.HandleDashInput();
         Owner.HandleAttackInput();
+        Owner.HandleSkillInput();
     }
 }

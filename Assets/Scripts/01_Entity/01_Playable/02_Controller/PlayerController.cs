@@ -26,6 +26,7 @@ public abstract class PlayerController : AnimationStateController
     public bool IsLockMoveDirection { get; set; } = false;
 
     public PlayerMove Movement => owner.Movement;
+    public PlayerCombat Combat => owner.Combat;
     #endregion
 
     #region UNITY METHOD
@@ -52,6 +53,7 @@ public abstract class PlayerController : AnimationStateController
             { Animator.StringToHash(AnimationTag.ANIM_TAG_ATTACK), new PlayerAttackState(this) },
             { Animator.StringToHash(AnimationTag.ANIM_TAG_ATTACK_END), new PlayerAttackEndState(this) },
             { Animator.StringToHash(AnimationTag.ANIM_TAG_SKILL), CreateSkillState() },
+            { Animator.StringToHash(AnimationTag.ANIM_TAG_QTE), new PlayerQTEState(this) }        
         };
     }
 
@@ -59,13 +61,6 @@ public abstract class PlayerController : AnimationStateController
     {
         int key = Animator.StringToHash(AnimationTag.ANIM_TAG_MOVEMENT);
         defaultState = stateMap[key];
-    }
-
-    protected override void UpdateAnimationState()
-    {
-        if (owner.IsLockControl) return;
-
-        base.UpdateAnimationState();
     }
     #endregion
 
@@ -125,6 +120,8 @@ public abstract class PlayerController : AnimationStateController
     #region INPUT HANDLE METHOD
     public void HandleMoveInput()
     {
+        if (owner.IsLockControl) return;
+
         Vector2 input = InputHelper.GetMoveAxisRaw();
 
         if (IsLockMoveDirection == false)
@@ -166,6 +163,8 @@ public abstract class PlayerController : AnimationStateController
 
     public void HandleJumpInput()
     {
+        if (owner.IsLockControl) return;
+
         if (Key.Space.WasPressed())
             Movement.RequestJump();
 
@@ -175,6 +174,8 @@ public abstract class PlayerController : AnimationStateController
 
     public void HandleDashInput()
     {
+        if (owner.IsLockControl) return;
+
         if (Key.LeftShift.WasPressed())
         {
             bool canDash = Movement.RequestDash();
@@ -193,6 +194,19 @@ public abstract class PlayerController : AnimationStateController
         if (Animator.GetBool(AnimationParam.IS_ATTACK) == false && Key.X.WasPressed())
             Animator.SetBool(AnimationParam.IS_ATTACK, true);
     }
+
+    public void HandleSkillInput()
+    {
+        if (owner.IsLockControl) return;
+
+        if (WasPressedSkillKey())
+        {
+            Animator.SetTrigger(AnimationParam.SKILL);
+            Animator.SetBool(AnimationParam.IS_USING_SKILL, true);
+        }
+    }
+
+    public bool WasPressedSkillKey() => Key.Z.WasPressed();
     #endregion
 
     #region PUBLIC METHOD
@@ -211,5 +225,11 @@ public abstract class PlayerController : AnimationStateController
     }
 
     public bool IsCurrentAnimationFinished() => Animator.IsCurrentAnimationFinished();
+    
+    public void UseQTE()
+    {
+        Animator.SetTrigger(AnimationParam.QTE);
+        Animator.SetBool(AnimationParam.IS_USING_QTE, true);
+    }
     #endregion
 }

@@ -40,7 +40,7 @@ public class EnemyController : AnimationStateController
     {
         get
         {
-            PlayerCombat localPlayer = PlayerCombat.LocalPlayer;
+            Player localPlayer = Player.Local;
 
             if (localPlayer == null) 
                 return null;

@@ -29,7 +29,7 @@ public class BossNormalPattern_1 : BossPatternStateBase
 
             time += Time.deltaTime;
 
-            Transform playerTrans = PlayerCombat.LocalPlayer.transform;
+            Transform playerTrans = Player.Local.transform;
             Vector3 playerPos = playerTrans.position;
 
             transform.position = playerPos + followOffset;

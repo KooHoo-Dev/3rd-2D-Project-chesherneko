@@ -3,8 +3,6 @@ using UnityEngine;
 
 public class PlayerCombat : CombatEntity
 {
-    public static PlayerCombat LocalPlayer { get; private set; }
-
     [Title("Components")]
     [SerializeField] private GameObject hurtBox;
 
@@ -17,11 +15,6 @@ public class PlayerCombat : CombatEntity
     [ShowInInspector, ReadOnly] private float dashTime = 0f;
 
     public int CurrentHP => currentHP;
-
-    private void OnEnable()
-    {
-        LocalPlayer = this;
-    }
 
     private void Update()
     {
@@ -49,13 +42,18 @@ public class PlayerCombat : CombatEntity
 
     public override void TakeDamage(int damage)
     {
-        ApplyDamage(damage);
-        Debug.Log($"{damage}만큼 데미지 받음!");
+        Player.Local.Combat.ApplyDamage(damage);
     }
 
     public override void TakeHeal(int heal)
     {
-        ApplyHeal(heal);
+        Player.Local.Combat.ApplyHeal(heal);
+    }
+
+    public void TakeHealByMaxHPRatio(float ratio)
+    {
+        int healAmount = Mathf.RoundToInt(stat.MaxHP * ratio);
+        TakeHeal(healAmount);
     }
 
     public void SyncPrevPlayerState(PlayerCombatSyncData syncData)
