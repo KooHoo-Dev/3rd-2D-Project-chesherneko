@@ -6,6 +6,7 @@ public class BossBeam : MonoBehaviour
 {
     [Title("Components")]
     [SerializeField] private new SpriteRenderer renderer;
+    [SerializeField] private Transform hitBoxTrans;
 
     [Title("Settings")]
     [SerializeField] private float positionOffset = 0.25f;
@@ -43,5 +44,7 @@ public class BossBeam : MonoBehaviour
         Vector2 spriteSize = renderer.size;
         spriteSize.y = dist;
         renderer.size = spriteSize;
+
+        hitBoxTrans.localScale = new Vector3(1f, dist, 1f);
     }
 }
