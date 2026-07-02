@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class MooniController : PlayerController
 {
-    protected override PlayerAnimationStateBase CreateSkillState()
-        => new MooniSkillState(this);
+    protected override PlayerAnimationStateBase CreateSkillState() => null;
+    protected override PlayerAnimationStateBase CreateSkillEndState()
+        => new MooniSkillEndState(this);
 }

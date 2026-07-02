@@ -11,7 +11,7 @@ public class PlayerQTEState : PlayerAnimationStateBase
 
     public override void OnExit()
     {
-        Animator.SetBool(AnimationParam.IS_USING_QTE, false);
+        Animator.SetBool(AnimationParam.CAN_JUMP_OR_FALL, true);
 
         if (Animator.GetBool(AnimationParam.IS_GROUNDED))
             Animator.ResetTrigger(AnimationParam.FALL);

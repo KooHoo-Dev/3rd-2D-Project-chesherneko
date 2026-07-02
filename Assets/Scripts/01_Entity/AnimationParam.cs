@@ -11,20 +11,19 @@ public class AnimationParam
 
     public static readonly int JUMP = Animator.StringToHash("Jump");
     public static readonly int FALL = Animator.StringToHash("Fall");
+    public static readonly int CAN_JUMP_OR_FALL = Animator.StringToHash("CanJumpOrFall");
+
     public static readonly int DASH = Animator.StringToHash("Dash");
 
     public static readonly int IS_GROUNDED = Animator.StringToHash("IsGrounded");
     public static readonly int IS_WALL_CLING = Animator.StringToHash("IsWallCling");
 
     public static readonly int IS_ATTACK = Animator.StringToHash("IsAttack");
-    public static readonly int IS_ATTACKING = Animator.StringToHash("IsAttacking");
     
     public static readonly int SKILL = Animator.StringToHash("Skill");
     public static readonly int SKILL_END = Animator.StringToHash("SkillEnd");
-    public static readonly int IS_USING_SKILL = Animator.StringToHash("IsUsingSkill");
 
     public static readonly int QTE = Animator.StringToHash("QTE");
-    public static readonly int IS_USING_QTE = Animator.StringToHash("IsUsingQTE");
 
     public static readonly int ATTACK_1 = Animator.StringToHash("Attack1");
     public static readonly int ATTACK_2 = Animator.StringToHash("Attack2");

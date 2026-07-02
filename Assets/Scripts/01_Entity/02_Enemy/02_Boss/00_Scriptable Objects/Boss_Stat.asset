@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Boss_Stat
   m_EditorClassIdentifier: Assembly-CSharp::EntityStat
   <MaxHP>k__BackingField: 999999
-  <ATK>k__BackingField: 0
+  <ATK>k__BackingField: 500

@@ -41,6 +41,7 @@ public abstract class PlayerController : AnimationStateController
 
     #region ABSTRACT METHOD
     protected abstract PlayerAnimationStateBase CreateSkillState();
+    protected abstract PlayerAnimationStateBase CreateSkillEndState();
 
     protected override void InitStateMap()
     {
@@ -53,7 +54,9 @@ public abstract class PlayerController : AnimationStateController
             { Animator.StringToHash(AnimationTag.ANIM_TAG_ATTACK), new PlayerAttackState(this) },
             { Animator.StringToHash(AnimationTag.ANIM_TAG_ATTACK_END), new PlayerAttackEndState(this) },
             { Animator.StringToHash(AnimationTag.ANIM_TAG_SKILL), CreateSkillState() },
-            { Animator.StringToHash(AnimationTag.ANIM_TAG_QTE), new PlayerQTEState(this) }        
+            { Animator.StringToHash(AnimationTag.ANIM_TAG_SKILL_END), CreateSkillEndState() },
+            { Animator.StringToHash(AnimationTag.ANIM_TAG_QTE), new PlayerQTEState(this) },
+            { Animator.StringToHash(AnimationTag.ANIM_TAG_DEAD), new PlayerDeadState(this) }
         };
     }
 
@@ -78,7 +81,7 @@ public abstract class PlayerController : AnimationStateController
         }
 
         if (Movement.IsClingToWall) return;
-        if (Animator.GetBool(AnimationParam.IS_ATTACKING)) return;
+        if (Animator.GetBool(AnimationParam.CAN_JUMP_OR_FALL) == false) return;
 
         //airborneState에 따라 Jump 및 Fall 트리거 실행
         AirborneState nextState =
@@ -201,8 +204,14 @@ public abstract class PlayerController : AnimationStateController
 
         if (WasPressedSkillKey())
         {
-            Animator.SetTrigger(AnimationParam.SKILL);
-            Animator.SetBool(AnimationParam.IS_USING_SKILL, true);
+            int hash = Animator.StringToHash(AnimationTag.ANIM_TAG_SKILL);
+            bool isSkillExists = stateMap[hash] != null;
+
+            int trigger = isSkillExists ?
+                AnimationParam.SKILL : AnimationParam.SKILL_END;
+
+            Animator.SetTrigger(trigger);
+            Animator.SetBool(AnimationParam.CAN_JUMP_OR_FALL, false);
         }
     }
 
@@ -229,7 +238,13 @@ public abstract class PlayerController : AnimationStateController
     public void UseQTE()
     {
         Animator.SetTrigger(AnimationParam.QTE);
-        Animator.SetBool(AnimationParam.IS_USING_QTE, true);
+        Animator.SetBool(AnimationParam.CAN_JUMP_OR_FALL, false);
+    }
+
+    public void Dead()
+    {
+        Animator.SetTrigger(AnimationParam.DEAD);
+        Animator.SetBool(AnimationParam.CAN_JUMP_OR_FALL, false);
     }
     #endregion
 }

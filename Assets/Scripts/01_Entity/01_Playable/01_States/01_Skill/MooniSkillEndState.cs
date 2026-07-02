@@ -1,12 +1,12 @@
 using UnityEngine;
 
-public class MooniSkillState : PlayerAnimationStateBase
+public class MooniSkillEndState : PlayerAnimationStateBase
 {
     private const float SKILL_APPLY_TIME = 0.5f;
 
     private bool isApplied = false;
 
-    public MooniSkillState(PlayerController owner) : base(owner) { }
+    public MooniSkillEndState(PlayerController owner) : base(owner) { }
 
     public override void OnEnter()
     {
@@ -24,13 +24,11 @@ public class MooniSkillState : PlayerAnimationStateBase
         }
 
         if (stateInfo.normalizedTime < 0.75f) return;
-
-        Animator.SetBool(AnimationParam.IS_USING_SKILL, false);
     }
 
     public override void OnExit()
     {
         isApplied = false;
-        Animator.SetBool(AnimationParam.IS_USING_SKILL, false);
+        Animator.SetBool(AnimationParam.CAN_JUMP_OR_FALL, true);
     }
 }

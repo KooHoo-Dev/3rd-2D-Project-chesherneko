@@ -508,6 +508,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerCombat
   stat: {fileID: 11400000, guid: 0d5bad1ed191a9f408dc10357ec5212b, type: 2}
+  owner: {fileID: 99453592}
   hurtBox: {fileID: 1253685683}
   hitEffect: {fileID: 99453594}
   dashInvincibleDuration: 0.05
@@ -3563,6 +3564,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerCombat
   stat: {fileID: 11400000, guid: 0d5bad1ed191a9f408dc10357ec5212b, type: 2}
+  owner: {fileID: 1199095856}
   hurtBox: {fileID: 354365673}
   hitEffect: {fileID: 1199095858}
   dashInvincibleDuration: 0.05

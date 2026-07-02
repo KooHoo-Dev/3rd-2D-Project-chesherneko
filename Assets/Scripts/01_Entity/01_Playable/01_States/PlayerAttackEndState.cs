@@ -8,8 +8,8 @@ public class PlayerAttackEndState : PlayerAnimationStateBase
     {
         Owner.IsLockMoveDirection = true;
 
-        Animator.SetBool(AnimationParam.IS_ATTACKING, true);
         Animator.SetBool(AnimationParam.IS_ATTACK, false);
+        Animator.SetBool(AnimationParam.CAN_JUMP_OR_FALL, false);
     }
 
     public override void OnUpdateState(AnimatorStateInfo stateInfo)
@@ -22,6 +22,6 @@ public class PlayerAttackEndState : PlayerAnimationStateBase
     public override void OnExit()
     {
         Owner.IsLockMoveDirection = false;
-        Animator.SetBool(AnimationParam.IS_ATTACKING, false);
+        Animator.SetBool(AnimationParam.CAN_JUMP_OR_FALL, true);
     }
 }

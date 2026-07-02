@@ -4,6 +4,7 @@ using UnityEngine;
 public class PlayerCombat : CombatEntity
 {
     [Title("Components")]
+    [SerializeField] private Player owner;
     [SerializeField] private GameObject hurtBox;
     [SerializeField] private HitEffect hitEffect;
 
@@ -44,7 +45,9 @@ public class PlayerCombat : CombatEntity
     public override void TakeDamage(int damage)
     {
         Player.Local.Combat.ApplyDamage(damage);
-        hitEffect.Play();
+
+        if (IsDead == false) hitEffect.Play();
+        else owner.Controller.Dead();
     }
 
     public override void TakeHeal(int heal)

@@ -6,6 +6,6 @@ public class ReaperSkillEndState : PlayerAnimationStateBase
 
     public override void OnExit()
     {
-        Animator.SetBool(AnimationParam.IS_USING_SKILL, false);
+        Animator.SetBool(AnimationParam.CAN_JUMP_OR_FALL, true);
     }
 }
