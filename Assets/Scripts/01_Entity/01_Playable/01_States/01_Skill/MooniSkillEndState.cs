@@ -11,6 +11,7 @@ public class MooniSkillEndState : PlayerAnimationStateBase
     public override void OnEnter()
     {
         Owner.StopMovementInput();
+        Animator.SetBool(AnimationParam.CAN_JUMP_OR_FALL, false);
     }
 
     public override void OnUpdateState(AnimatorStateInfo stateInfo)

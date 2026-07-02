@@ -17,6 +17,9 @@ public class HurtBox : MonoBehaviour
 
     private void OnDestroy()
     {
-        CombatManager.Instance.RemoveHurtBox(collider);
+        CombatManager instance = CombatManager.Instance;
+
+        if (instance == null) return;
+        instance.RemoveHurtBox(collider);
     }
 }
