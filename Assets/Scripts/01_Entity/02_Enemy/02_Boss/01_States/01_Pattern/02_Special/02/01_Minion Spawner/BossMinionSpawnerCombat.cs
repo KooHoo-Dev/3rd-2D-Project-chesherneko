@@ -8,6 +8,11 @@ public class BossMinionSpawnerCombat : EnemyCombat
     [SerializeField, TitleGroup("Components")] private new SpriteRenderer renderer;
     [SerializeField, TitleGroup("Settings")] private float fadeOutDuration = 1.5f;
 
+    private void OnEnable()
+    {
+        ResetHP();
+    }
+
     protected override void OnDead()
     {
         StartCoroutine(OnDeadCoroutine());

@@ -23,7 +23,7 @@ public class BossBeam : MonoBehaviour
         transform.position = pos;
         transform.up = pupilDir * -1f;
 
-        ResizeRenderingSize(pupilPos);
+        ResizeRenderingSize(pupilDir);
 
         gameObject.SetActive(true);
 

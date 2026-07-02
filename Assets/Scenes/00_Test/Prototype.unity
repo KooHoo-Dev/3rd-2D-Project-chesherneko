@@ -487,6 +487,7 @@ GameObject:
   - component: {fileID: 99453593}
   - component: {fileID: 99453587}
   - component: {fileID: 99453586}
+  - component: {fileID: 99453594}
   m_Layer: 0
   m_Name: Reaper
   m_TagString: Player
@@ -508,6 +509,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerCombat
   stat: {fileID: 11400000, guid: 0d5bad1ed191a9f408dc10357ec5212b, type: 2}
   hurtBox: {fileID: 1253685683}
+  hitEffect: {fileID: 99453594}
   dashInvincibleDuration: 0.05
   qteGaugeGainMult: 4
 --- !u!114 &99453587
@@ -648,6 +650,23 @@ MonoBehaviour:
   <Animator>k__BackingField: {fileID: 1970520614}
   owner: {fileID: 99453592}
   fallTransitionThreshold: -1
+--- !u!114 &99453594
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 99453585}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0828d7904730a84e942eb81a869f41b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HitEffect
+  renderer: {fileID: 1970520613}
+  animator: {fileID: 1970520614}
+  flickInterval: 0.083
+  repeat: 2
+  hasHitStun: 0
 --- !u!1 &171261399
 GameObject:
   m_ObjectHideFlags: 0
@@ -693,10 +712,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e5781d1cd25cc24c82a2a28d0467099, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HitBox
-  damageMult: 0
+  damageMult: 10
   hitLayerMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 1024
 --- !u!61 &171261402
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -809,7 +828,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: 5164e6d76746a1d46a740d79b1cf9926, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1493,7 +1512,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a077588c1173e0d41919c853873e7e6b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BossMinionSpawnerCombat
-  stat: {fileID: 0}
+  stat: {fileID: 11400000, guid: 0efa329a23901904f977a974842d5c05, type: 2}
   animator: {fileID: 0}
   hitEffect: {fileID: 425383020}
   hitReactionType: 1
@@ -2651,10 +2670,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e5781d1cd25cc24c82a2a28d0467099, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HitBox
-  damageMult: 0
+  damageMult: 1.5
   hitLayerMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 256
 --- !u!61 &809348619
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -3416,13 +3435,14 @@ GameObject:
   - component: {fileID: 1199095857}
   - component: {fileID: 1199095854}
   - component: {fileID: 1199095855}
+  - component: {fileID: 1199095858}
   m_Layer: 0
   m_Name: Mooni
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!61 &1199095850
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -3544,6 +3564,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerCombat
   stat: {fileID: 11400000, guid: 0d5bad1ed191a9f408dc10357ec5212b, type: 2}
   hurtBox: {fileID: 354365673}
+  hitEffect: {fileID: 1199095858}
   dashInvincibleDuration: 0.05
   qteGaugeGainMult: 4
 --- !u!114 &1199095856
@@ -3577,6 +3598,23 @@ MonoBehaviour:
   <Animator>k__BackingField: {fileID: 199699750}
   owner: {fileID: 1199095856}
   fallTransitionThreshold: -1
+--- !u!114 &1199095858
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1199095848}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0828d7904730a84e942eb81a869f41b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HitEffect
+  renderer: {fileID: 199699751}
+  animator: {fileID: 199699750}
+  flickInterval: 0.083
+  repeat: 2
+  hasHitStun: 0
 --- !u!1 &1200373841
 GameObject:
   m_ObjectHideFlags: 0
@@ -9674,10 +9712,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e5781d1cd25cc24c82a2a28d0467099, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HitBox
-  damageMult: 0
+  damageMult: 2.5
   hitLayerMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 256
 --- !u!61 &1958023848
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -9768,7 +9806,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: 5164e6d76746a1d46a740d79b1cf9926, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -9981,7 +10019,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 042e420588e3b8d4984023ba96f1de73, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BossIdleState
-  patterns: []
+  normalPatterns:
+  - {fileID: 1552756430}
+  - {fileID: 1188895637}
+  - {fileID: 1356899817}
+  specialPatterns:
+  - {fileID: 1616083851}
+  - {fileID: 1053104418}
+  specialPatternChance: 0.25
 --- !u!1001 &2095654764
 PrefabInstance:
   m_ObjectHideFlags: 0

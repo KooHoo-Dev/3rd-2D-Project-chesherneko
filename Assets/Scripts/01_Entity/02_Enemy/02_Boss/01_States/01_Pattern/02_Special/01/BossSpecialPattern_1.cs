@@ -29,10 +29,7 @@ public class BossSpecialPattern_1 : BossPatternStateBase
         InitLasers();
     }
 
-    protected override void OnDisable()
-    {
-        
-    }
+    protected override void OnDisable() { }
 
     private void InitLasers()
     {
@@ -78,7 +75,7 @@ public class BossSpecialPattern_1 : BossPatternStateBase
             yield return null;
         }
 
-        Debug.Log("패턴 종료!");
+        owner.ChangeState(typeof(BossIdleState));
     }
 
     private bool HasActiveEye()

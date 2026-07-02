@@ -5,6 +5,7 @@ public class PlayerCombat : CombatEntity
 {
     [Title("Components")]
     [SerializeField] private GameObject hurtBox;
+    [SerializeField] private HitEffect hitEffect;
 
     [Title("Settings")]
     [SerializeField] private float dashInvincibleDuration = 0.05f;
@@ -43,6 +44,7 @@ public class PlayerCombat : CombatEntity
     public override void TakeDamage(int damage)
     {
         Player.Local.Combat.ApplyDamage(damage);
+        hitEffect.Play();
     }
 
     public override void TakeHeal(int heal)

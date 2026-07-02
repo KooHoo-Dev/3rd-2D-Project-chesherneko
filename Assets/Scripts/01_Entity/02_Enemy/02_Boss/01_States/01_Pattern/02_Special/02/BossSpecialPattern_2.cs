@@ -76,6 +76,6 @@ public class BossSpecialPattern_2 : BossPatternStateBase
             patternFailObj.SetActive(false);
         }
 
-        Debug.Log("2번 특수 패턴 종료!");
+        owner.ChangeState(typeof(BossIdleState));
     }
 }

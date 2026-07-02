@@ -45,8 +45,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e5781d1cd25cc24c82a2a28d0467099, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HitBox
-  <DamageMult>k__BackingField: 1
-  <HitLayerMask>k__BackingField:
+  damageMult: 1
+  hitLayerMask:
     serializedVersion: 2
     m_Bits: 256
 --- !u!61 &2236747338748526061
