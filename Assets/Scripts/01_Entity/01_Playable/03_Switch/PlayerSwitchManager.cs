@@ -53,6 +53,8 @@ public class PlayerSwitchManager : MonoSingleton<PlayerSwitchManager>
             return;
         }
 
+        if (Player.Local.IsLockControl) return;
+
         if (Key.Digit1.WasPressed())
             StartCoroutine(SwitchCoroutine(0));
     }

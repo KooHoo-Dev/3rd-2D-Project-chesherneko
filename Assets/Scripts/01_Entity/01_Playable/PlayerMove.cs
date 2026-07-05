@@ -192,10 +192,11 @@ public class PlayerMove : MonoBehaviour
             dashCooldownTime = 0f;
     }
 
-    public void ResetState()
+    public void ResetState(bool includeMoveX = false)
     {
         moveInput = Vector2.zero;
         MoveY = 0f;
+        if (includeMoveX) MoveX = 0f;
 
         isJumpRequested = false;
 

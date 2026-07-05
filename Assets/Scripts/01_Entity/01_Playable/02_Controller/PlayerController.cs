@@ -188,12 +188,16 @@ public abstract class PlayerController : AnimationStateController
 
     public void HandleAttackInput()
     {
+        if (owner.IsLockControlHard) return;
+
         if (Key.X.WasPressed())
             Animator.SetBool(AnimationParam.IS_ATTACK, true);
     }
 
     public void HandleComboAttackInput()
     {
+        if (owner.IsLockControlHard) return;
+
         if (Animator.GetBool(AnimationParam.IS_ATTACK) == false && Key.X.WasPressed())
             Animator.SetBool(AnimationParam.IS_ATTACK, true);
     }
@@ -201,18 +205,10 @@ public abstract class PlayerController : AnimationStateController
     public void HandleSkillInput()
     {
         if (owner.IsLockControl) return;
+        if (WasPressedSkillKey() == false) return;
 
-        if (WasPressedSkillKey())
-        {
-            int hash = Animator.StringToHash(AnimationTag.ANIM_TAG_SKILL);
-            bool isSkillExists = stateMap[hash] != null;
-
-            int trigger = isSkillExists ?
-                AnimationParam.SKILL : AnimationParam.SKILL_END;
-
-            Animator.SetTrigger(trigger);
-            Animator.SetBool(AnimationParam.CAN_JUMP_OR_FALL, false);
-        }
+        RequestSkill();
+        Animator.SetBool(AnimationParam.CAN_JUMP_OR_FALL, false);
     }
 
     public bool WasPressedSkillKey() => Key.Z.WasPressed();
@@ -247,4 +243,9 @@ public abstract class PlayerController : AnimationStateController
         Animator.SetBool(AnimationParam.CAN_JUMP_OR_FALL, false);
     }
     #endregion
+
+    protected virtual void RequestSkill()
+    {
+        Animator.SetTrigger(AnimationParam.SKILL);
+    }
 }

@@ -2,12 +2,16 @@ using UnityEngine;
 
 public class ReaperSkillState : PlayerAnimationStateBase
 {
-    private readonly float skillKeepDuration = 2f;
     private float skillKeepTime = 0f;
 
     private bool isTriggered = false;
 
-    public ReaperSkillState(PlayerController owner) : base(owner) { }
+    private new ReaperController Owner { get; }
+
+    public ReaperSkillState(ReaperController owner) : base(owner)
+    {
+        Owner = owner;
+    }
 
     public override void OnEnter()
     {
@@ -24,7 +28,7 @@ public class ReaperSkillState : PlayerAnimationStateBase
 
         Owner.HandleMoveInput();
 
-        if (Owner.WasPressedSkillKey() || skillKeepTime > skillKeepDuration)
+        if (Owner.WasPressedSkillKey() || skillKeepTime > Owner.SkillKeepDuration)
         {
             Owner.StopMovementInput();
 

@@ -31,7 +31,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.25, y: 1.25, z: 1}
+  m_LocalScale: {x: 0.6125, y: 0.6125, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8581149518185555194}
@@ -160,9 +160,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aeeffd4262638d741b53e611b0789a37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyCombat
-  <Stat>k__BackingField:
-    <MaxHP>k__BackingField: 500
-    <ATK>k__BackingField: 25
+  stat: {fileID: 11400000, guid: 3625e68b88256054ab00165ebddc625b, type: 2}
   animator: {fileID: 8145625140736288369}
   hitEffect: {fileID: 1130554059386032188}
   hitReactionType: 1
@@ -224,10 +222,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e5781d1cd25cc24c82a2a28d0467099, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HitBox
-  <DamageMult>k__BackingField: 1
-  <HitLayerMask>k__BackingField:
+  damageMult: 0
+  hitLayerMask:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 0
 --- !u!61 &399062332904158703
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -411,10 +409,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e5781d1cd25cc24c82a2a28d0467099, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HitBox
-  <DamageMult>k__BackingField: 10
-  <HitLayerMask>k__BackingField:
+  damageMult: 0
+  hitLayerMask:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 0
 --- !u!61 &2728180172681583298
 BoxCollider2D:
   m_ObjectHideFlags: 0

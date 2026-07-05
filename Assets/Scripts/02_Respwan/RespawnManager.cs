@@ -11,7 +11,7 @@ public class RespawnManager : MonoSingleton<RespawnManager>
     private static int savePointIdx = 0;
 
     [SerializeField] private List<SavePoint> savePoints;
-
+    
     private void Start()
     {
         int prevBuildIndex = sceneBuildIndex;

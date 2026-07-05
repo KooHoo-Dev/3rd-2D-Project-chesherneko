@@ -475,6 +475,53 @@ MonoBehaviour:
   hitLayerMask:
     serializedVersion: 2
     m_Bits: 1024
+--- !u!1 &3314529836309400676
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8393127939736730165}
+  - component: {fileID: 3124824278870374083}
+  m_Layer: 0
+  m_Name: Dead
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &8393127939736730165
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3314529836309400676}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1023979542430547570}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3124824278870374083
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3314529836309400676}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f94d321a86e08f247bb6fd84bf687412, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BossDeadState
+  hurtBoxes:
+  - {fileID: 6225676600527632410}
+  - {fileID: 714828727770701527}
 --- !u!1 &3686261070584450221
 GameObject:
   m_ObjectHideFlags: 0
@@ -610,7 +657,7 @@ MonoBehaviour:
   myCombat: {fileID: 6268051336531446133}
   spawnCount: 1
   spawnHalfRange: 12
-  spawnOffsetY: 0.625
+  spawnOffsetY: 0.4375
   fadeInDuration: 1.5
   prefabs:
   - {fileID: -6691183234372222692, guid: cf7e7598363a0dd498b2ef062bfe35b0, type: 3}
@@ -1047,11 +1094,12 @@ MonoBehaviour:
   startLag: 1.5
   endLag: 3
   minionSpawner: {fileID: 3522252884444466741}
-  patternSuccessObj: {fileID: 1478228026390851238}
-  patternFailObj: {fileID: 6650300768464630502}
+  successAttack: {fileID: 0}
+  failAttack: {fileID: 0}
+  hurtBoxes: []
   maxPatternTime: 30
-  patternSuccessLag: 1.5
-  patternFailLag: 1.25
+  successLag: 0
+  failLag: 0
 --- !u!1 &6178691332161444927
 GameObject:
   m_ObjectHideFlags: 0
@@ -1533,6 +1581,7 @@ Transform:
   m_Children:
   - {fileID: 3927190599069595290}
   - {fileID: 3476652409311188301}
+  - {fileID: 8393127939736730165}
   - {fileID: 8278729528478331053}
   - {fileID: 4078294004671820381}
   m_Father: {fileID: 0}
@@ -1644,9 +1693,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BossCombat
   stat: {fileID: 11400000, guid: 8c6ede82fe1953041997f6e5768a48a1, type: 2}
-  animator: {fileID: 0}
+  animator: {fileID: 1793206063038981993}
   hitEffect: {fileID: 7103817169107369116}
   hitReactionType: 1
+  controller: {fileID: 3142205763318699336}
 --- !u!114 &7103817169107369116
 MonoBehaviour:
   m_ObjectHideFlags: 0

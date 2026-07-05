@@ -41,6 +41,12 @@ TagManager:
   - name: Background
     uniqueID: 31722893
     locked: 0
+  - name: Mid-Background
+    uniqueID: 3930046665
+    locked: 0
+  - name: Midground
+    uniqueID: 2509228565
+    locked: 0
   - name: Props_Back
     uniqueID: 3322496619
     locked: 0
@@ -50,11 +56,11 @@ TagManager:
   - name: Props_Front
     uniqueID: 3055493463
     locked: 0
-  - name: Foreground
-    uniqueID: 371707889
-    locked: 0
   - name: Ground
     uniqueID: 2511944639
+    locked: 0
+  - name: Foreground
+    uniqueID: 371707889
     locked: 0
   m_RenderingLayers:
   - Default

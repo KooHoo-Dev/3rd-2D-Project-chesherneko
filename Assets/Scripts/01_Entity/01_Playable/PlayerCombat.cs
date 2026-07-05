@@ -16,8 +16,6 @@ public class PlayerCombat : CombatEntity
     [ShowInInspector, ReadOnly] private bool isDashInvincible = false;
     [ShowInInspector, ReadOnly] private float dashTime = 0f;
 
-    public int CurrentHP => currentHP;
-
     private void Update()
     {
         if (isDashInvincible == false) return;
@@ -63,7 +61,7 @@ public class PlayerCombat : CombatEntity
 
     public void SyncPrevPlayerState(PlayerCombatSyncData syncData)
     {
-        currentHP = syncData.CurrentHP;
+        CurrentHP = syncData.CurrentHP;
     }
 
     public void OnDashStarted() => isDashInvincible = true;

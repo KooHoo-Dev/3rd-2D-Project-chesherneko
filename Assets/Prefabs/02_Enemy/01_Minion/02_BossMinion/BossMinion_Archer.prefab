@@ -62,7 +62,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.25, y: 1.25, z: 1}
+  m_LocalScale: {x: 0.6125, y: 0.6125, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4160142525963860261}
@@ -193,9 +193,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aeeffd4262638d741b53e611b0789a37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyCombat
-  <Stat>k__BackingField:
-    <MaxHP>k__BackingField: 150
-    <ATK>k__BackingField: 50
+  stat: {fileID: 11400000, guid: 497c41bfa6347e44c98edf2dfb8a9c1d, type: 2}
   animator: {fileID: 8089810542471885810}
   hitEffect: {fileID: 0}
   hitReactionType: 0

@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d716d0f319c14b3468ab96eb0ff3f5fa, type: 3}
   m_Name: Boss_MinionSpawner_Stat
   m_EditorClassIdentifier: Assembly-CSharp::EntityStat
-  <MaxHP>k__BackingField: 500
+  <MaxHP>k__BackingField: 200
   <ATK>k__BackingField: 0

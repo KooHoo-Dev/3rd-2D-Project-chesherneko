@@ -6,76 +6,81 @@ public class BossSpecialPattern_2 : BossPatternStateBase
 {
     [Title("Components")]
     [SerializeField] private BossMinionSpawner minionSpawner;
-    [SerializeField] private GameObject patternSuccessObj;
-    [SerializeField] private GameObject patternFailObj;
+    [SerializeField] private GameObject successAttack;
+    [SerializeField] private GameObject failAttack;
+    [SerializeField] private GameObject[] hurtBoxes;
 
     [Title("Settings")]
     [SerializeField] private float maxPatternTime;
 
-    [SerializeField, TitleGroup("Lag")] private float patternSuccessLag;
-    [SerializeField, TitleGroup("Lag")] private float patternFailLag;
+    [SerializeField, TitleGroup("Lag")] private float successLag;
+    [SerializeField, TitleGroup("Lag")] private float failLag;
 
-    private WaitForSeconds waitForPatternSuccessLag;
-    private WaitForSeconds waitForPatternFailLag;
+    private WaitForSeconds waitForSuccess;
+    private WaitForSeconds waitForFail;
 
     protected override int PatternStartTrigger => Animator.StringToHash("SpecialAttack2");
     private readonly int patternEndTrigger = Animator.StringToHash("SpecialAttack2_End");
 
     protected override void OnDisable()
     {
-        patternSuccessObj.SetActive(false);
-        patternFailObj.SetActive(false);
+        successAttack.SetActive(false);
+        failAttack.SetActive(false);
     }
 
     protected override void InitYieldInstructions()
     {
         base.InitYieldInstructions();
-        waitForPatternSuccessLag = new(patternSuccessLag);
-        waitForPatternFailLag = new(patternFailLag);
+        waitForSuccess = new(successLag);
+        waitForFail = new(failLag);
     }
 
     protected override IEnumerator PatternCoroutine()
     {
         yield return base.PatternCoroutine();
+        SetActiveHurtBoxes(false);
 
-        yield return minionSpawner.InitCoroutine();
+        yield return minionSpawner.StartPattern();
+
+        bool isSuccess = false;
 
         float time = 0f;
-        bool isPatternSuccessed = true;
 
         while (true)
         {
-            if (minionSpawner.IsDead) break;
-            if (time > maxPatternTime)
+            if (minionSpawner.IsCleared)
             {
-                isPatternSuccessed = false;
-                yield return minionSpawner.KillAllMinions();
+                isSuccess = true;
                 break;
             }
+            if (time > maxPatternTime) break;
 
             time += Time.deltaTime;
             yield return null;
         }
 
-        yield return new WaitUntil(() => minionSpawner.gameObject.activeSelf == false);
-        yield return new WaitForSeconds(0.5f);
+        if (isSuccess == false)
+            yield return minionSpawner.FailPattern();
+
+        yield return new WaitUntil(() => minionSpawner.IsFinished);
 
         Animator.SetTrigger(patternEndTrigger);
         yield return waitForEndLag;
 
-        if (isPatternSuccessed)
-        {
-            patternSuccessObj.SetActive(true);
-            yield return waitForPatternSuccessLag;
-            patternSuccessObj.SetActive(false);
-        }
-        else
-        {
-            patternFailObj.SetActive(true);
-            yield return waitForPatternFailLag;
-            patternFailObj.SetActive(false);
-        }
+        GameObject attack = isSuccess ? successAttack : failAttack;
+        WaitForSeconds waitForSeconds = isSuccess ? waitForSuccess : waitForFail;
 
+        attack.SetActive(true);
+        yield return waitForSeconds;
+        attack.SetActive(false);
+
+        SetActiveHurtBoxes(true);
         owner.ChangeState(typeof(BossIdleState));
+    }
+
+    private void SetActiveHurtBoxes(bool isActive)
+    {
+        for (int i = 0; i < hurtBoxes.Length; i++)
+            hurtBoxes[i].SetActive(isActive);
     }
 }

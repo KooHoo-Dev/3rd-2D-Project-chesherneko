@@ -2,11 +2,14 @@ using UnityEngine;
 
 public class MooniSkillEndState : PlayerAnimationStateBase
 {
-    private const float SKILL_APPLY_TIME = 0.5f;
-
     private bool isApplied = false;
 
-    public MooniSkillEndState(PlayerController owner) : base(owner) { }
+    private new MooniController Owner { get; }
+
+    public MooniSkillEndState(MooniController owner) : base(owner)
+    {
+        Owner = owner;
+    }
 
     public override void OnEnter()
     {
@@ -18,10 +21,10 @@ public class MooniSkillEndState : PlayerAnimationStateBase
     {
         Owner.HandleDashInput();
 
-        if (isApplied == false && stateInfo.normalizedTime >= SKILL_APPLY_TIME)
+        if (isApplied == false && stateInfo.normalizedTime >= Owner.SkillApplyLag)
         {
             isApplied = true;
-            Owner.Combat.TakeHealByMaxHPRatio(0.3f);
+            Owner.ApplySkill();
         }
 
         if (stateInfo.normalizedTime < 0.75f) return;

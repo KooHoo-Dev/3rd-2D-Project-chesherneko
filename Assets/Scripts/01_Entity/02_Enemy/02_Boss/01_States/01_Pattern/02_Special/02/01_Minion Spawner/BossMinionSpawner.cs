@@ -26,7 +26,8 @@ public class BossMinionSpawner : MonoBehaviour
 
     private readonly List<BossMinion> remainMinions = new();
 
-    public bool IsDead => myCombat.IsDead;
+    public bool IsCleared => myCombat.IsDead;
+    public bool IsFinished => gameObject.activeSelf == false;
 
     private MaterialPropertyBlock propertyBlock;
 
@@ -43,7 +44,7 @@ public class BossMinionSpawner : MonoBehaviour
         SetOutlineAlpha(isActive: false);
     }
 
-    public IEnumerator InitCoroutine()
+    public IEnumerator StartPattern()
     {
         gameObject.SetActive(true);
 
@@ -53,6 +54,16 @@ public class BossMinionSpawner : MonoBehaviour
 
         for (int i = 0; i < spawnCount; i++)
             SpawnRandomMinion();
+    }
+
+    public IEnumerator FailPattern()
+    {
+        for (int i = remainMinions.Count - 1; i >= 0; i--)
+            remainMinions[i].Kill();
+
+        yield return new WaitUntil(() => remainMinions.Count == 0);
+
+        myCombat.TakeDamage(myCombat.CurrentHP);
     }
 
     public void NotifyMinionDestroyed(BossMinion minion)
@@ -71,16 +82,6 @@ public class BossMinionSpawner : MonoBehaviour
             hurtBox.SetActive(true);
             SetOutlineAlpha(isActive: true);
         }
-    }
-
-    public IEnumerator KillAllMinions()
-    {
-        for (int i = remainMinions.Count - 1; i >= 0; i--)
-            remainMinions[i].Kill();
-
-        yield return new WaitUntil(() => remainMinions.Count == 0);
-
-        myCombat.TakeDamage(9999);
     }
 
     private void SpawnRandomMinion()

@@ -22,9 +22,11 @@ public class Player : MonoBehaviour
     [field: SerializeField] public PlayerController Controller { get; private set; }
     [field: SerializeField] public PlayerMove Movement { get; private set; }
     [field: SerializeField] public PlayerCombat Combat { get; private set; }
+    [field: SerializeField] public EmotionCom Emotion { get; private set; }
 
     [Title("Runtime States")]
     [ShowInInspector] public bool IsLockControl { get; private set; } = false;
+    [ShowInInspector] public bool IsLockControlHard { get; private set; } = false;
     #endregion
 
     #region UNITY METHODS
@@ -73,11 +75,28 @@ public class Player : MonoBehaviour
     public void LockControl() => IsLockControl = true;
     public void UnlockControl() => IsLockControl = false;
 
+    public void LockControlHard()
+    {
+        LockControl();
+        IsLockControlHard = true;
+    }
+    public void UnlockControlHard()
+    {
+        UnlockControl();
+        IsLockControlHard = false;
+    }
+
     public void EnableInvincibility() => Combat.SetHurtBoxActive(false);
     public void DisableInvincibility() => Combat.SetHurtBoxActive(true);
 
     public bool IsBusyForSwitch() => Controller.IsBusyForSwitch();
     public bool IsCurrentAnimationFinished() => Controller.IsCurrentAnimationFinished();
     public void UseQTE() => Controller.UseQTE();
+
+    public void ResetMovementState()
+    {
+        Movement.ResetState(true);
+        Controller.Animator.SetFloat(AnimationParam.MOVEMENT, 0f);
+    }
     #endregion
 }
