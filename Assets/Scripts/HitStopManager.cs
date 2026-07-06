@@ -9,13 +9,13 @@ public class HitStopManager : MonoSingleton<HitStopManager>
     [SerializeField] private float shakeAmplitude = 0.5f;
     [SerializeField] private float shakeFrequency = 12f;
 
-    private float defaultFixedDeltaTime;
+    //private float defaultFixedDeltaTime;
     private bool isPlaying = false;
 
     protected override void Awake()
     {
         base.Awake();
-        defaultFixedDeltaTime = Time.fixedDeltaTime;
+        //defaultFixedDeltaTime = Time.fixedDeltaTime;
     }
 
     public void Play(float duration)
@@ -31,14 +31,14 @@ public class HitStopManager : MonoSingleton<HitStopManager>
         isPlaying = true;
 
         Time.timeScale = 0f;
-        Time.fixedDeltaTime = 0f;
+        //Time.fixedDeltaTime = 0f;
 
         SetCameraShake(true);
 
         yield return new WaitForSecondsRealtime(duration);
 
         Time.timeScale = 1f;
-        Time.fixedDeltaTime = defaultFixedDeltaTime;
+        //Time.fixedDeltaTime = defaultFixedDeltaTime;
 
         SetCameraShake(false);
 

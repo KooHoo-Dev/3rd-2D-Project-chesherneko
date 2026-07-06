@@ -84,6 +84,7 @@ public class PlayerSwitchManager : MonoSingleton<PlayerSwitchManager>
         isSwitchOnCooldown = true;
         switchCooldownTime = 0f;
         PlayerUI.Instance.SwitchPortrait();
+        PlayerUI.Instance.SetSwitchGlow(false);
 
         Player curr = currentPlayer;
         Player next = sparePlayers[nextIdx];
@@ -186,6 +187,9 @@ public class PlayerSwitchManager : MonoSingleton<PlayerSwitchManager>
     {
         qteGauge += qteGaugeGainUnit * mult;
         qteGauge = Mathf.Clamp(qteGauge, 0f, qteGaugeMax);
+
+        if (qteGauge >= qteGaugeMax)
+            PlayerUI.Instance.SetSwitchGlow(true);
     }
     #endregion
 }

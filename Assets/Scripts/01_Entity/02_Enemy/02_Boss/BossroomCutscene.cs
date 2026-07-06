@@ -2,9 +2,9 @@ using DG.Tweening;
 using Sirenix.OdinInspector;
 using System.Collections;
 using Unity.Cinemachine;
-using UnityEditor;
 using UnityEngine;
 
+[DefaultExecutionOrder(100)]
 public class BossroomCutscene : MonoBehaviour
 {
     [Title("Components")]
@@ -143,7 +143,8 @@ public class BossroomCutscene : MonoBehaviour
         cameraPixelPerfect.enabled = false;
 
         cameraConfiner.BoundingShape2D = newBoundary;
-        cameraConfiner.BakeBoundingShape(camera, 1f);
+        cameraConfiner.InvalidateLensCache();
+        cameraConfiner.InvalidateBoundingShapeCache();
 
         Tween offsetTween = DOTween.To(
             () => cameraFollow.FollowOffset.y,

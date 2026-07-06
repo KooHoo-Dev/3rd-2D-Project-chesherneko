@@ -12,6 +12,7 @@ public class PlayerUI : MonoSingleton<PlayerUI>
     [SerializeField] private Image remainHP;
     [SerializeField] private Image skillCooldown;
     [SerializeField] private Image switchCooldown;
+    [SerializeField] private Image switchGlow;
 
     [Space]
     [SerializeField] private Image mainPortrait;
@@ -46,6 +47,9 @@ public class PlayerUI : MonoSingleton<PlayerUI>
     {
         StartCoroutine(SwitchPortraitCoroutine());
     }
+
+    public void SetSwitchGlow(bool isActive)
+        => switchGlow.enabled = isActive;
 
     public IEnumerator SwitchPortraitCoroutine()
     {

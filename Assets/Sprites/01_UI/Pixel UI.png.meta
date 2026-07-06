@@ -313,6 +313,28 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: Pixel UI_9
+      rect:
+        serializedVersion: 2
+        x: 62
+        y: 434
+        width: 20
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bc452286e7f451a46b2255a4d3510f1c
+      internalID: -1497950478
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     customData: 
     physicsShape: []
@@ -338,6 +360,7 @@ TextureImporter:
       Pixel UI_6: -370107129
       Pixel UI_7: 749940521
       Pixel UI_8: 961257694
+      Pixel UI_9: -1497950478
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
