@@ -48,6 +48,8 @@ public class HitBox : MonoBehaviour
         @event.Amount = damage;
         @event.Position = Vector2.zero;
 
+        @event.HitStopDuration = hurtBox.HitStopDuration;
+
         CombatManager.Instance.To(sender, receiver, @event);
 
         return true;

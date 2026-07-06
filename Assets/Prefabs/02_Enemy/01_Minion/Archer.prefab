@@ -289,6 +289,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HurtBox
   collider: {fileID: 7788557218785840226}
+  <HitStopDuration>k__BackingField: 0.075
 --- !u!61 &7788557218785840226
 BoxCollider2D:
   m_ObjectHideFlags: 0

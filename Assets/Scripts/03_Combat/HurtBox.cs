@@ -6,6 +6,9 @@ public class HurtBox : MonoBehaviour
     [Title("Components")]
     [SerializeField] private new Collider2D collider;
 
+    [Title("Settings")]
+    [field: SerializeField] public float HitStopDuration { get; private set; } = 0.1f;
+
     [Title("Runtime States")]
     [ShowInInspector, ReadOnly] public CombatEntity Owner { get; private set; }
 

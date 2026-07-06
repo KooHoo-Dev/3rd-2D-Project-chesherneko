@@ -12,6 +12,8 @@ public struct CombatEvent
     public CombatEventType EventType;
     public int Amount;
     public Vector3 Position;
+
+    public float HitStopDuration;
 }
 
 public class CombatManager : MonoSingleton<CombatManager>
@@ -74,6 +76,7 @@ public class CombatManager : MonoSingleton<CombatManager>
             return;
         }
 
+        HitStopManager.Instance.Play(@event.HitStopDuration);
         receiver.TakeDamage(@event.Amount);
     }
 }

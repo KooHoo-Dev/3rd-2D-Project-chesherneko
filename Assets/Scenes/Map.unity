@@ -2462,6 +2462,7 @@ Transform:
   - {fileID: 1752942940}
   - {fileID: 934094087}
   - {fileID: 2089975482}
+  - {fileID: 886309417}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &230898245
@@ -2729,6 +2730,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 577127701}
     m_Modifications:
+    - target: {fileID: 1578131812825348295, guid: aa731c0425790f0478da3902cfed30b9, type: 3}
+      propertyPath: <HitStopDuration>k__BackingField
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3531692932691159425, guid: aa731c0425790f0478da3902cfed30b9, type: 3}
       propertyPath: m_Name
       value: Mooni
@@ -26884,6 +26889,53 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1916928648}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &886309416
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 886309417}
+  - component: {fileID: 886309418}
+  m_Layer: 0
+  m_Name: HitStop
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &886309417
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 886309416}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 223158703}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &886309418
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 886309416}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76d88eb73d89af142ab8c0284befff84, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HitStopManager
+  cameraNoise: {fileID: 481040669}
+  shakeAmplitude: 3
+  shakeFrequency: 24
 --- !u!1 &888607465
 GameObject:
   m_ObjectHideFlags: 0
@@ -28114,6 +28166,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5933447257492384311, guid: 9066fd570e3a0ea4ea6e558f478e424f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8537883386551872832, guid: 9066fd570e3a0ea4ea6e558f478e424f, type: 3}
+      propertyPath: <HitStopDuration>k__BackingField
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
