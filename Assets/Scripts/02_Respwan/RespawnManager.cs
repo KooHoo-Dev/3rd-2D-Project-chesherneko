@@ -51,7 +51,5 @@ public class RespawnManager : MonoSingleton<RespawnManager>
         savePointIdx = idx > savePointIdx ? 
             idx :
             savePointIdx;
-
-        Debug.Log($"세이브 포인트 갱신! : {savePointIdx}");
     }
 }

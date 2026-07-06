@@ -25,11 +25,12 @@ public class MooniSkillEndState : PlayerAnimationStateBase
         {
             isApplied = true;
             Owner.ApplySkill();
+            Owner.RequestStartSkillCooldown();
         }
 
         if (stateInfo.normalizedTime < 0.75f) return;
     }
-
+    
     public override void OnExit()
     {
         isApplied = false;

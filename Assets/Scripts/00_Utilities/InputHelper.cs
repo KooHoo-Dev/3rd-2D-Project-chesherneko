@@ -12,6 +12,9 @@ public static class InputHelper
 
     public static bool IsPressed(this Key key)
         => Keyboard.current[key].isPressed;
+
+    public static bool WasPressedAnyKey()
+        => Keyboard.current.anyKey.wasPressedThisFrame;
     #endregion
 
     #region AXIS RAW

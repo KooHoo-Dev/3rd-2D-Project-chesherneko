@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class BossDeadState : BossStateBase
 {
+    [SerializeField] private GameObject bossGameObject;
     [SerializeField] private GameObject[] hurtBoxes;
 
     protected override void OnEnable()
@@ -20,5 +21,10 @@ public class BossDeadState : BossStateBase
     private IEnumerator DeadCoroutine()
     {
         yield return new WaitUntil(() => Animator.IsCurrentAnimationFinished());
+        
+        BossUI.Instance.SetActiveUI(false);
+        GameClearUI.Instance.GameClear();
+
+        Destroy(bossGameObject);
     }
 }

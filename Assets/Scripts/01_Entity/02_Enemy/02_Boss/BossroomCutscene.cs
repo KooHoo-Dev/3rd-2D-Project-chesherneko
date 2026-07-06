@@ -214,6 +214,8 @@ public class BossroomCutscene : MonoBehaviour
 
         BossController controller = bossGameObject.GetComponent<BossController>();
         controller.enabled = true;
+
+        BossUI.Instance.SetActiveUI(true);
     }
 
     private IEnumerator ShakeCamera(float amplitude, float frequency, float duration)

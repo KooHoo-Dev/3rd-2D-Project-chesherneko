@@ -21,15 +21,15 @@ public class PlayerSwitchManager : MonoSingleton<PlayerSwitchManager>
     [SerializeField] private float switchJumpDuration = 0.5f;
     [SerializeField] private float screenOutDistance = 10f;
 
-    [Space]
-    [SerializeField] private float switchCooldown = 10f;
+    [field: Space]
+    [field: SerializeField] public float SwitchCooldown { get; private set; } = 10f;
 
     [Space]
     [SerializeField] private float qteGaugeMax = 100f;
     [SerializeField] private float qteGaugeGainUnit = 5f;
 
     [Title("Runtime States")]
-    [ShowInInspector, ReadOnly] private bool isSwitching = false;
+    [ShowInInspector, ReadOnly] public bool IsSwitching { get; private set; } = false;
 
     [Space]
     [ShowInInspector, ReadOnly] private bool isSwitchOnCooldown = false;
@@ -45,7 +45,7 @@ public class PlayerSwitchManager : MonoSingleton<PlayerSwitchManager>
         if (Key.F5.WasPressed())
             qteGauge = qteGaugeMax;
 
-        if (isSwitching) return;
+        if (IsSwitching) return;
 
         if (isSwitchOnCooldown)
         {
@@ -66,11 +66,13 @@ public class PlayerSwitchManager : MonoSingleton<PlayerSwitchManager>
         switchCooldownTime += Time.deltaTime;
 
         if (qteGauge >= qteGaugeMax ||
-            switchCooldownTime > switchCooldown)
+            switchCooldownTime > SwitchCooldown)
         {
             isSwitchOnCooldown = false;
-            switchCooldownTime = 0f;
+            switchCooldownTime = SwitchCooldown;
         }
+
+        PlayerUI.Instance.UpdateSwitchCooldown(switchCooldownTime);
     }
 
     private IEnumerator SwitchCoroutine(int nextIdx)
@@ -78,8 +80,10 @@ public class PlayerSwitchManager : MonoSingleton<PlayerSwitchManager>
         bool canUseQTE = qteGauge >= qteGaugeMax;
         qteGauge = 0f;
 
-        isSwitching = true;
+        IsSwitching = true;
         isSwitchOnCooldown = true;
+        switchCooldownTime = 0f;
+        PlayerUI.Instance.SwitchPortrait();
 
         Player curr = currentPlayer;
         Player next = sparePlayers[nextIdx];
@@ -112,7 +116,7 @@ public class PlayerSwitchManager : MonoSingleton<PlayerSwitchManager>
         currentPlayer = next;
         sparePlayers[nextIdx] = curr;
 
-        isSwitching = false;
+        IsSwitching = false;
     }
 
     private IEnumerator SwitchOutCoroutine(Player curr,

@@ -23,6 +23,10 @@ public abstract class PlayerController : AnimationStateController
 
     private bool wasClingToWall = false;
 
+    private static bool isSkillCooldown = false;
+    public static float SkillCooldown { get; } = 5f;
+    public static float SkillCooldownTime { get; private set; } = SkillCooldown;
+
     public bool IsLockMoveDirection { get; set; } = false;
 
     public PlayerMove Movement => owner.Movement;
@@ -36,6 +40,7 @@ public abstract class PlayerController : AnimationStateController
 
         UpdateGroundedState();
         UpdateWallClingState();
+        UpdateSkillCooldownTime();
     }
     #endregion
 
@@ -117,6 +122,22 @@ public abstract class PlayerController : AnimationStateController
         else Movement.SwitchMoveDirection();
 
         wasClingToWall = isClingToWall;
+    }
+
+    private void UpdateSkillCooldownTime()
+    {
+        if (isSkillCooldown == false) return;
+        if (PlayerSwitchManager.Instance.IsSwitching) return;
+
+        SkillCooldownTime += Time.deltaTime;
+
+        if (SkillCooldownTime > SkillCooldown)
+        {
+            SkillCooldownTime = SkillCooldown;
+            isSkillCooldown = false;
+        }
+
+        PlayerUI.Instance.UpdateSkillCooldown(SkillCooldownTime);
     }
     #endregion
 
@@ -205,10 +226,17 @@ public abstract class PlayerController : AnimationStateController
     public void HandleSkillInput()
     {
         if (owner.IsLockControl) return;
+        if (isSkillCooldown) return;
         if (WasPressedSkillKey() == false) return;
 
         RequestSkill();
         Animator.SetBool(AnimationParam.CAN_JUMP_OR_FALL, false);
+    }
+
+    public void RequestStartSkillCooldown()
+    {
+        isSkillCooldown = true;
+        SkillCooldownTime = 0f;
     }
 
     public bool WasPressedSkillKey() => Key.Z.WasPressed();

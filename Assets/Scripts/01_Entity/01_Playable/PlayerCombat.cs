@@ -43,6 +43,7 @@ public class PlayerCombat : CombatEntity
     public override void TakeDamage(int damage)
     {
         Player.Local.Combat.ApplyDamage(damage);
+        PlayerUI.Instance.UpdateRemainHP(Player.Local.Combat.HPRatio);
 
         if (IsDead == false) hitEffect.Play();
         else owner.Controller.Dead();
@@ -51,6 +52,7 @@ public class PlayerCombat : CombatEntity
     public override void TakeHeal(int heal)
     {
         Player.Local.Combat.ApplyHeal(heal);
+        PlayerUI.Instance.UpdateRemainHP(Player.Local.Combat.HPRatio);
     }
 
     public void TakeHealByMaxHPRatio(float ratio)
